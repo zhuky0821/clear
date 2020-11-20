@@ -1,0 +1,8 @@
+ignite:
+  igniteInstanceName: clear
+  metricsLogFrequency: 600000
+  maxSize:
+
+logging:
+  config: classpath:logback-spring.xml
+
