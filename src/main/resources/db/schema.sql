@@ -73,6 +73,16 @@ create table tshareholder(
 );
 
 
+--文件导入配置
+drop table if exists tfilecolumnconfig;
+create table tfilecolumnconfig(
+    table_name varchar(32),
+    column_name varchar(32),
+    begin_pos int,
+    end_pos int,
+    constraint tfilecolumnconfig_0 primary key(table_name, column_name)
+);
+
 -- 业务表
 
 drop table if exists  tcombistock;
@@ -229,7 +239,7 @@ create table tjsmx
   qtje2 decimal default 0 not null,
   qtje3 decimal default 0 not null,
   sjsf decimal default 0 not null,
-  jgdm varchar2(32) default ' ',
+  jgdm varchar2(4) default ' ',
   fjsm varchar2(128) default ' ',
   record_id int default 0 not null,
   constraint tjsmx_0 primary key (record_id)
