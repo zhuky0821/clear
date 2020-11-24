@@ -23,12 +23,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>com.h2database</groupId>
-					<artifactId>h2</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -38,27 +32,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.apache.ignite</groupId>
-			<artifactId>ignite-indexing</artifactId>
-			<version>${ignite.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.ignite</groupId>
-			<artifactId>ignite-log4j2</artifactId>
-			<version>${ignite.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.ignite</groupId>
-			<artifactId>ignite-spring-boot-autoconfigure-ext</artifactId>
-			<version>1.0.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<version>1.4.197</version>
+			<groupId>org.mybatis.spring.boot</groupId>
+			<artifactId>mybatis-spring-boot-starter</artifactId>
+			<version>2.0.1</version>
 		</dependency>
 
 		<dependency>
@@ -66,11 +42,35 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.ignite</groupId>
+			<artifactId>ignite-spring</artifactId>
+			<version>${ignite.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.ignite</groupId>
+			<artifactId>ignite-spring-data</artifactId>
+			<version>${ignite.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.4.197</version><!--$NO-MVN-MAN-VER$-->
+		</dependency>
+
 	</dependencies>
 
 	<build>
