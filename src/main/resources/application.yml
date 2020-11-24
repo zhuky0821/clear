@@ -6,8 +6,6 @@ spring:
 #    password: clear
     url: jdbc:ignite:thin://localhost:7000
     driver-class-name: org.apache.ignite.IgniteJdbcThinDriver
-    schema: classpath:db/schema.sql
-    data: classpath:db/data.sql
     # Hikari will use the above plus the following to setup connection pooling
     type: com.zaxxer.hikari.HikariDataSource
     hikari:

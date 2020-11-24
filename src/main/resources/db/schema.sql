@@ -1,4 +1,3 @@
-
 -- 基础表
 drop table if exists  tproduct;
 
@@ -47,7 +46,7 @@ create table tsecurity(
 	constraint tsecurity_0 primary key(security_id)
 );
 
-create unique index tsecurity_1 on tsecurity (security_code, mkt_id);
+create index if not exists tsecurity_1 on tsecurity (security_code, mkt_id);
 
 drop table if exists tbond;
 create table tbond(
@@ -142,7 +141,7 @@ create table ttmpcurrents(
     constraint ttmpcurrents_0 primary key (pos_str)
 );
 
-create index ttmpcurrents_1 on ttmpcurrents(product_id);
+create index if not exists ttmpcurrents_1 on ttmpcurrents(product_id);
 
 drop table if exists tjournal;
 create table tjournal(
@@ -179,7 +178,7 @@ create table tjournal(
     constraint tjournal_0 primary key (serial_id)
 );
 
-create index tjournal_1 on ttmpcurrents(product_id);
+create index if not exists tjournal_1 on ttmpcurrents(product_id);
 
 drop table if exists tjsmx;
 create table tjsmx
@@ -230,11 +229,11 @@ create table tjsmx
   qtje2 decimal default 0 not null,
   qtje3 decimal default 0 not null,
   sjsf decimal default 0 not null,
-  jgdm decimal default ' ',
+  jgdm varchar2(32) default ' ',
   fjsm varchar2(128) default ' ',
   record_id int default 0 not null,
   constraint tjsmx_0 primary key (record_id)
 );
 
-create index tjsmx_1 on tjsmx(zqzh);
+create index if not exists tjsmx_1 on tjsmx(zqzh);
 

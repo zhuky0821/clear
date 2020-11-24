@@ -85,7 +85,7 @@
     </root>
     <!--对于类路径以 org.mybatis 开头的Logger,输出级别设置为ERROR,则输出到控制台，file日志和error日志-->
     <!--这个logger没有指定appender，它会继承root节点中定义的那些appender-->
-    <logger name="org.mybatis" level="ERROR" />
+    <logger name="org.mybatis" level="DEBUG" />
     <logger name="org.springframework" level="INFO" />
     <logger name="org.apache.ignite" level="INFO" />
     <logger name="zhuky.clear" level="DEBUG" />
