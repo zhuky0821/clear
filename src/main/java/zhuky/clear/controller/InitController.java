@@ -1,5 +1,7 @@
 package zhuky.clear.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import zhuky.clear.service.InitService;
 
 @RestController
 @RequestMapping("/init")
+@Api(value = "系统初始化接口")
 public class InitController {
     Logger logger = LoggerFactory.getLogger(InitController.class);
 
@@ -17,11 +20,13 @@ public class InitController {
     private InitService initService;
 
     @GetMapping("/schema")
+    @ApiOperation(value = "初始化数据库表结构")
     public void SchemaInitial() throws Exception {
         initService.initSchema();
     }
 
     @GetMapping("/data")
+    @ApiOperation(value = "初始化数据库基础数据")
     public void DataInitial() throws Exception {
         initService.initData();
     }
