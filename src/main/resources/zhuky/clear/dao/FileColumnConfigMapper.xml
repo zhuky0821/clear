@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="zhuky.clear.dao.FileColumnConfigMapper">
+  <resultMap id="fileColumnConfigs" type="zhuky.clear.entity.TFileColumnConfig">
+    <result column="table_name" jdbcType="VARCHAR" property="tableName"/>
+    <result column="column_name" jdbcType="VARCHAR" property="columnName"/>
+    <result column="begin_pos" jdbcType="INTEGER" property="beginPos"/>
+    <result column="end_pos" jdbcType="INTEGER" property="endPos"/>
+  </resultMap>
+  <select id="getFileColumnConfigs" resultMap="fileColumnConfigs">
+    select * from tfilecolumnconfig where table_name = #{tableName} order by end_pos
+  </select>
+</mapper>

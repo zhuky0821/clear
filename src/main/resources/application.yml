@@ -4,7 +4,7 @@ spring:
 #    url: jdbc:mysql://localhost:3306/clear?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=false
 #    username: clear
 #    password: clear
-    url: jdbc:ignite:thin://localhost:7000
+    url: jdbc:ignite:thin://192.168.7.69:7000
     driver-class-name: org.apache.ignite.IgniteJdbcThinDriver
     # Hikari will use the above plus the following to setup connection pooling
     type: com.zaxxer.hikari.HikariDataSource

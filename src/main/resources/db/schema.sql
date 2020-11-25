@@ -40,7 +40,7 @@ create table tsecurity(
 	security_code varchar(32),
 	mkt_id int,
 	security_name varchar(64),
-	last_proce decimal,
+	last_price decimal,
 	security_type int,
 	asset_type int,
 	constraint tsecurity_0 primary key(security_id)
@@ -69,7 +69,28 @@ create table tshareholder(
 	mkt_id int,
 	shareholder_name varchar(64),
 	bind_seat varchar(32),
+	combi_id int,
+	use_product_list varchar(256),
 	constraint tshareholder_0 primary key(shareholder_id, mkt_id)
+);
+
+drop table if exists ttradedate;
+create table ttradedate(
+	tradeday_type_id int,
+	sys_date int,
+	tradeday_flag int,
+	settleday_flag int,
+	constraint ttradedate_0 primary key(tradeday_type_id, sys_date)
+);
+
+drop table if exists tmarket;
+create table tmarket(
+	tradeday_type_id int,
+	mkt_id int,
+	business_date int,
+	next_business_date int,
+	pre_business_date int,
+	constraint tmarket_0 primary key(mkt_id)
 );
 
 

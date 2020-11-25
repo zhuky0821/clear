@@ -3,9 +3,12 @@ package zhuky.clear;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import zhuky.clear.dao.FileColumnConfigMapper;
+import zhuky.clear.entity.TFileColumnConfig;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.List;
 
 @SpringBootTest
 class ClearApplicationTests {
@@ -49,6 +52,17 @@ class ClearApplicationTests {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Autowired
+	FileColumnConfigMapper fileColumnConfigMapper;
+	@Test
+	void testFileColumnConfig(){
+		List<TFileColumnConfig> tjsmxs = fileColumnConfigMapper.getFileColumnConfigs("tjsmx");
+		for (TFileColumnConfig tjsmx : tjsmxs) {
+			System.out.println("private  " + tjsmx.getColumnName() + ";");
+		}
+
 	}
 
 }
