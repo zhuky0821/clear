@@ -11,4 +11,8 @@
     <select id="getProductUseShareholder" resultMap="shareholderMap">
         SELECT * FROM TSHAREHOLDER a WHERE instr(a.use_product_list, #{productIdStr})
     </select>
+
+    <select id="getSecurity" resultType="zhuky.clear.entity.Tsecurity">
+        select * from tsecurity a where a.security_code = #{securityCode} and a.mkt_id = #{mktId}
+    </select>
 </mapper>

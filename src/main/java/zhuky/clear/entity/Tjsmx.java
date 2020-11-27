@@ -58,4 +58,5 @@ public class Tjsmx {
     private BigDecimal sjsf;
     private String jgdm;
     private String fjsm;
+    private int recordId;
 }
