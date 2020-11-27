@@ -42,8 +42,8 @@ class ClearApplicationTests {
 		try {
 			Connection connection = dataSource.getConnection();
 
-			String copySql = "COPY FROM 'c:\\Users\\zhuky\\Desktop\\tbond.csv' INTO tbond (\n" +
-					"  security_id, bond_interest) FORMAT CSV\n";
+			String copySql = "COPY FROM 'c:\\Users\\zhuky\\Desktop\\1111.csv' INTO tjsmx (\n" +
+					"  SCDM,JLLX,JYFS,JSFS,YWLX,QSBZ,GHLX,JSBH,CJBH,SQBH,WTBH,JYRQ,QSRQ,JSRQ,QTRQ,WTSJ,CJSJ,XWH1,XWH2,XWHY,JSHY,TGHY,ZQZH,ZQDM1,ZQDM2,ZQLB,LTLX,QYLB,GPNF,MMBZ,SL,CJSL,ZJZH,BZ,JG1,JG2,QSJE,YHS,JSF,GHF,ZGF,SXF,QTJE1,QTJE2,QTJE3,SJSF,JGDM,FJSM,RECORD_ID\n) FORMAT CSV\n";
 
 			try (Statement statement = connection.createStatement()) {
 			  statement.executeUpdate(copySql);
@@ -63,6 +63,18 @@ class ClearApplicationTests {
 			System.out.println("private  " + tjsmx.getColumnName() + ";");
 		}
 
+	}
+
+	@Test
+	void createJsmx(){
+
+	}
+
+	static void createFile(String mmbz, String ywlx, int count, int zqzh){
+		for(int i=0; i<count; i++){
+			StringBuilder line = new StringBuilder();
+			line.append("\"01\",\"001\",\"001\",\"001\",\"SSSSS\",\"060\",\"00A\",\"2008070024802194\",\"22519711\",\"0000008228\",\" \",\"20200807\",\"20200807\",\"20200810\",\"0\",\" \",\" \",\"44355\",\"44355\",\"JSE14\",\"JSE14\",\" \",\"B882752741\",\"600699\",\" \",\"PT\",\"0\",\" \",\"0\",\"B\",\"300.000\",\"300.000\",\"040000000000511268\",\"RMB\",\"22.8300000000\",\"22.8300000000\",\"-6849.00\",\"0.00\",\"-0.33\",\"-0.14\",\"-0.14\",\"0.00\",\"0.00\",\"0.00\",\"0.00\",\"-6849.61\",\"0000\",\"A股交易清算\",\"20896\"\n");
+		}
 	}
 
 }
