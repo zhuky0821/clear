@@ -5,5 +5,5 @@ import zhuky.clear.entity.TTmpCurrents;
 import java.util.List;
 
 public interface Identify {
-    List<TTmpCurrents> identifyFile(int productId);
+    List<TTmpCurrents> identifyFile(int productId, int businessDate);
 }
