@@ -7,7 +7,7 @@ create table tproduct (
 	product_name varchar(64),
 	product_share decimal,
 	constraint tproduct_0 primary key (product_id)
-);
+) WITH "template=partitioned, CACHE_NAME=tproduct, key_type=ProductKey, value_type=MyProduct";
 
 
 drop table if exists  tunit;

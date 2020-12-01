@@ -1,10 +1,15 @@
 package zhuky.clear;
 
+import org.apache.ignite.cache.query.QueryCursor;
+import org.apache.ignite.cache.query.SqlFieldsQuery;
+import org.apache.ignite.client.ClientCache;
+import org.apache.ignite.client.IgniteClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import zhuky.clear.dao.FileColumnConfigMapper;
 import zhuky.clear.entity.TFileColumnConfig;
+import zhuky.clear.entity.Tproduct;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -75,6 +80,23 @@ class ClearApplicationTests {
 			StringBuilder line = new StringBuilder();
 			line.append("\"01\",\"001\",\"001\",\"001\",\"SSSSS\",\"060\",\"00A\",\"2008070024802194\",\"22519711\",\"0000008228\",\" \",\"20200807\",\"20200807\",\"20200810\",\"0\",\" \",\" \",\"44355\",\"44355\",\"JSE14\",\"JSE14\",\" \",\"B882752741\",\"600699\",\" \",\"PT\",\"0\",\" \",\"0\",\"B\",\"300.000\",\"300.000\",\"040000000000511268\",\"RMB\",\"22.8300000000\",\"22.8300000000\",\"-6849.00\",\"0.00\",\"-0.33\",\"-0.14\",\"-0.14\",\"0.00\",\"0.00\",\"0.00\",\"0.00\",\"-6849.61\",\"0000\",\"A股交易清算\",\"20896\"\n");
 		}
+	}
+
+
+	@Autowired
+	IgniteClient ignite;
+	@Test
+	void testCache(){
+		ClientCache<Integer, Tproduct> product = ignite.cache("tproduct1");
+//		QueryCursor queryCursor = product.query(new SqlFieldsQuery("select * from tproduct"));
+//		List all = queryCursor.getAll();
+//		for (Object o : all) {
+//			System.out.println(o);
+//
+//		}
+
+		Tproduct tProduct = product.get(1);
+		System.out.println(tProduct);
 	}
 
 }
