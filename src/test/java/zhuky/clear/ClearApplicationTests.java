@@ -10,6 +10,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import zhuky.clear.dao.FileColumnConfigMapper;
 import zhuky.clear.entity.TFileColumnConfig;
 import zhuky.clear.entity.Tproduct;
+import zhuky.clear.entity.ignite.TproductValue;
+import zhuky.clear.entity.ignite.TshareholderKey;
+import zhuky.clear.entity.ignite.TshareholderValue;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -36,6 +39,18 @@ class ClearApplicationTests {
 			while (resultSet.next()){
 				System.out.println(resultSet.getInt("product_id") + " " + resultSet.getString("product_code"));
 			}
+
+			conn.setAutoCommit(false);
+			statement = conn.prepareStatement("delete from tshareholder a where a.shareholder_id = ? ");
+			statement.setString(1, "holder5");
+			statement.executeUpdate();
+
+			conn.rollback();
+
+			statement = conn.prepareStatement("delete from tshareholder a where a.shareholder_id = ? ");
+			statement.setString(1, "holder4");
+			statement.executeUpdate();
+			conn.commit();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -87,16 +102,19 @@ class ClearApplicationTests {
 	IgniteClient ignite;
 	@Test
 	void testCache(){
-		ClientCache<Integer, Tproduct> product = ignite.cache("tproduct1");
-//		QueryCursor queryCursor = product.query(new SqlFieldsQuery("select * from tproduct"));
-//		List all = queryCursor.getAll();
-//		for (Object o : all) {
-//			System.out.println(o);
-//
-//		}
+		ClientCache<TshareholderKey, TshareholderValue> cache = ignite.cache("tshareholder");
+		QueryCursor queryCursor = cache.query(new SqlFieldsQuery("select * from tshareholder"));
+		List all = queryCursor.getAll();
+		for (Object o : all) {
+			System.out.println(o);
 
-		Tproduct tProduct = product.get(1);
-		System.out.println(tProduct);
+		}
+
+		TshareholderKey key = new TshareholderKey("holder2", 1);
+
+		TshareholderValue value = cache.get(key);
+		System.out.println("key:" + key);
+		System.out.println("value:" + value);
 	}
 
 }

@@ -7,7 +7,7 @@ create table tproduct (
 	product_name varchar(64),
 	product_share decimal,
 	constraint tproduct_0 primary key (product_id)
-) WITH "template=partitioned, CACHE_NAME=tproduct, key_type=ProductKey, value_type=MyProduct";
+) WITH "ATOMICITY = TRANSACTIONAL_SNAPSHOT";
 
 
 drop table if exists  tunit;
@@ -72,7 +72,7 @@ create table tshareholder(
 	combi_id int,
 	use_product_list varchar(256),
 	constraint tshareholder_0 primary key(shareholder_id, mkt_id)
-);
+) WITH "template=partitioned, ATOMICITY = TRANSACTIONAL_SNAPSHOT ,BACKUPS=0, CACHE_NAME=tshareholder, key_type=zhuky.clear.entity.ignite.TshareholderKey, value_type=zhuky.clear.entity.ignite.TshareholderValue";
 
 drop table if exists ttradedate;
 create table ttradedate(

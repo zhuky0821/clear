@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class Tproduct {
     private int product_id;
-    private String product_code;
-    private String product_name;
-    private BigDecimal product_share;
+    private String productCode;
+    private String productName;
+    private BigDecimal productShare;
 }
