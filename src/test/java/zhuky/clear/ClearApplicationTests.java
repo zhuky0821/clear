@@ -1,25 +1,31 @@
 package zhuky.clear;
 
+import org.apache.ignite.IgniteCache;
+import org.apache.ignite.cache.query.FieldsQueryCursor;
 import org.apache.ignite.cache.query.QueryCursor;
 import org.apache.ignite.cache.query.SqlFieldsQuery;
 import org.apache.ignite.client.ClientCache;
 import org.apache.ignite.client.IgniteClient;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import zhuky.clear.dao.BaseTableQueryMapper;
 import zhuky.clear.dao.FileColumnConfigMapper;
 import zhuky.clear.entity.TFileColumnConfig;
-import zhuky.clear.entity.Tproduct;
-import zhuky.clear.entity.ignite.TproductValue;
 import zhuky.clear.entity.ignite.TshareholderKey;
 import zhuky.clear.entity.ignite.TshareholderValue;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.List;
+import java.util.concurrent.*;
 
 @SpringBootTest
 class ClearApplicationTests {
+
+	Logger logger = LoggerFactory.getLogger(ClearApplicationTests.class);
 
 	@Test
 	void contextLoads() {
@@ -116,5 +122,64 @@ class ClearApplicationTests {
 		System.out.println("key:" + key);
 		System.out.println("value:" + value);
 	}
+
+	@Autowired
+	BaseTableQueryMapper baseTableQueryMapper;
+	@Test
+	void testxn(){
+		logger.info("测试证券信息查询性能开始");
+		//ClientCache cache = ignite.cache("tshareholder");
+		for (int i = 0; i < 1000000; i++) {
+			SqlFieldsQuery sqlFieldsQuery = new SqlFieldsQuery(new SqlFieldsQuery("select * from tshareholder where shareholder_id = ? and mkt_id = ?"));
+			sqlFieldsQuery.setArgs("holder14", 1);
+			QueryCursor query = ignite.query(sqlFieldsQuery);
+
+			if(i % 10000 == 0){
+				logger.info("已查询次数：{}", i);
+				for (Object o : query) {
+					logger.info(o.toString());
+				}
+			}
+		}
+
+		logger.info("测试证券信息查询性能结束");
+
+	}
+
+	@Test
+	void testxn1(){
+		logger.info("测试证券信息查询性能1开始");
+		try {
+			Class.forName("org.apache.ignite.IgniteJdbcThinDriver");
+			Connection connection = DriverManager.getConnection("jdbc:ignite:thin://192.168.7.69:7000");
+			PreparedStatement statement = connection.prepareStatement("select * from tsecurity where security_code = ? and mkt_id = ?");
+			statement.setString(1, "600001");
+			statement.setInt(2,1);
+			for (int i = 0; i < 1000000; i++) {
+
+				statement.executeQuery();
+			}
+			statement.close();
+
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
+
+		logger.info("测试证券信息查询性能1结束");
+
+	}
+
+	@Test
+	void testbfxn() throws InterruptedException {
+		ExecutorService executorService = Executors.newFixedThreadPool(20);
+
+		logger.info("主线程查询证券信息开始");
+		for (int i = 0; i < 1; i++) {
+		}
+		executorService.awaitTermination(1000, TimeUnit.SECONDS);
+		logger.info("主线程查询证券信息结束");
+	}
+
+
 
 }
