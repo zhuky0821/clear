@@ -16,18 +16,18 @@ import zhuky.clear.service.InitService;
 public class InitController {
     Logger logger = LoggerFactory.getLogger(InitController.class);
 
-    @Autowired
-    private InitService initService;
-
-    @GetMapping("/schema")
-    @ApiOperation(value = "初始化数据库表结构")
-    public void SchemaInitial() throws Exception {
-        initService.initSchema();
-    }
-
-    @GetMapping("/data")
-    @ApiOperation(value = "初始化数据库基础数据")
-    public void DataInitial() throws Exception {
-        initService.initData();
-    }
+//    @Autowired
+//    private InitService initService;
+//
+//    @GetMapping("/schema")
+//    @ApiOperation(value = "初始化数据库表结构")
+//    public void SchemaInitial() throws Exception {
+//        initService.initSchema();
+//    }
+//
+//    @GetMapping("/data")
+//    @ApiOperation(value = "初始化数据库基础数据")
+//    public void DataInitial() throws Exception {
+//        initService.initData();
+//    }
 }

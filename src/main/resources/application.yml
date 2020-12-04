@@ -3,25 +3,25 @@ ignite-client:
   timeout: 10000
   tcpNoDelay: false
 
-spring:
-  datasource:
-#    driver-class-name: com.mysql.jdbc.Driver
-#    url: jdbc:mysql://localhost:3306/clear?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=false
-#    username: clear
-#    password: clear
-    url: jdbc:ignite:thin://192.168.7.69:7000
-    driver-class-name: org.apache.ignite.IgniteJdbcThinDriver
-    # Hikari will use the above plus the following to setup connection pooling
-    type: com.zaxxer.hikari.HikariDataSource
-    hikari:
-      minimum-idle: 20
-      maximum-pool-size: 50
-      auto-commit: true
-      idle-timeout: 30000
-      pool-name: DataClearHikariCP
-      max-lifetime: 1800000
-      connection-timeout: 30000
-      connection-test-query: SELECT 1
+#spring:
+#  datasource:
+##    driver-class-name: com.mysql.jdbc.Driver
+##    url: jdbc:mysql://localhost:3306/clear?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&verifyServerCertificate=false&useSSL=false
+##    username: clear
+##    password: clear
+#    url: jdbc:ignite:thin://192.168.7.69:7000
+#    driver-class-name: org.apache.ignite.IgniteJdbcThinDriver
+#    # Hikari will use the above plus the following to setup connection pooling
+#    type: com.zaxxer.hikari.HikariDataSource
+#    hikari:
+#      minimum-idle: 20
+#      maximum-pool-size: 50
+#      auto-commit: true
+#      idle-timeout: 30000
+#      pool-name: DataClearHikariCP
+#      max-lifetime: 1800000
+#      connection-timeout: 30000
+#      connection-test-query: SELECT 1
 
 
 logging:
