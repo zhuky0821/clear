@@ -31,7 +31,7 @@ class ClearApplicationTests {
 	void contextLoads() {
 	}
 
-	@Autowired
+	//@Autowired
 	DataSource dataSource;
 	//private DataSource dataSource;
 	@Test
@@ -80,7 +80,7 @@ class ClearApplicationTests {
 		}
 	}
 
-	@Autowired
+	//@Autowired
 	FileColumnConfigMapper fileColumnConfigMapper;
 	@Test
 	void testFileColumnConfig(){
@@ -123,7 +123,7 @@ class ClearApplicationTests {
 		System.out.println("value:" + value);
 	}
 
-	@Autowired
+	///@Autowired
 	BaseTableQueryMapper baseTableQueryMapper;
 	@Test
 	void testxn(){
@@ -180,6 +180,13 @@ class ClearApplicationTests {
 		logger.info("主线程查询证券信息结束");
 	}
 
-
+	@Test
+	void testSqlQueryFiled(){
+		logger.info("测试场查询");
+		SqlFieldsQuery sqlFieldsQuery = new SqlFieldsQuery("select * from tbond");
+		QueryCursor<List<?>> query = ignite.query(sqlFieldsQuery);
+		List<List<?>> all = query.getAll();
+		logger.info("查询结果：{}", all);
+	}
 
 }
