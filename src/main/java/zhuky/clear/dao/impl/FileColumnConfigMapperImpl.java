@@ -14,16 +14,7 @@ public class FileColumnConfigMapperImpl implements zhuky.clear.dao.FileColumnCon
 
     @Override
     public List<TFileColumnConfig> getFileColumnConfigs(String tableName) {
-
-        List<TFileColumnConfig> fileColumnConfigs = new ArrayList<>();
-
-        List<Object> all = ormUtil.querySingleTable("TFileColumnConfig", "table_name = ? order by begin_pos", tableName);
-
-        for (Object o : all) {
-            TFileColumnConfig fileColumnConfig = (TFileColumnConfig) o;
-            fileColumnConfigs.add(fileColumnConfig);
-        }
-
-        return fileColumnConfigs;
+        List<TFileColumnConfig> all = ormUtil.querySingleTable("TFileColumnConfig", "table_name = ? order by begin_pos", tableName);
+        return all;
     }
 }

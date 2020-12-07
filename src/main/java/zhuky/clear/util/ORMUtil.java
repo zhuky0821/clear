@@ -20,8 +20,8 @@ public class ORMUtil {
     @Autowired
     private IgniteClient client;
 
-    public Object convertTObject(List<?> list, String className){
-        Object a = null;
+    public <E> E convertTObject(List<?> list, String className){
+        E res = null;
 
         try {
             Class clazz = Class.forName(className);
@@ -38,7 +38,7 @@ public class ORMUtil {
                 throw new RuntimeException("没有找到全参构造器");
             }
 
-            a = allFieldsConstruct.newInstance(list.toArray());
+            res = (E) allFieldsConstruct.newInstance(list.toArray());
 
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -50,7 +50,7 @@ public class ORMUtil {
             e.printStackTrace();
         }
 
-        return a;
+        return res;
     }
 
 
@@ -79,8 +79,8 @@ public class ORMUtil {
         List<E> res = new ArrayList<>();
         List<List<?>> all = client.query(new SqlFieldsQuery(sql).setArgs(args)).getAll();
         for (List<?> objects : all) {
-            Object object = convertTObject(objects, classFullName);
-            res.add((E) object);
+            E e = convertTObject(objects, classFullName);
+            res.add(e);
         }
 
         return res;
@@ -90,13 +90,9 @@ public class ORMUtil {
     public <E> List<E> querySingleTable(String className, String condition, Object... args){
         String classFullName = "zhuky.clear.entity." + className;
         StringBuilder sqlBulider = new StringBuilder();
-        sqlBulider.append("select ");
-        sqlBulider.append(getSql(classFullName));
-        sqlBulider.append(" from ");
-        sqlBulider.append(className);
+        sqlBulider.append("select ").append(getSql(classFullName)).append(" from ").append(className);
         if(condition != null && condition.trim().length() > 0){
-            sqlBulider.append(" where ");
-            sqlBulider.append(condition);
+            sqlBulider.append(" where ").append(condition);
         }
         String sql = sqlBulider.toString();
         logger.info("执行单表查询sql：{}", sql);

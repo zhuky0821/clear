@@ -106,8 +106,7 @@ public class QueryTest {
 
     @Test
     void testOrm3(){
-        Object[] args = {1};
-        List<Object> tshareholder = ormUtil.querySingleTable("Tproduct", "product_id = ?", args);
+        List<Tshareholder> tshareholder = ormUtil.querySingleTable("Tproduct", "product_id = ?", 1);
         for (Object o : tshareholder) {
             System.out.println(o);
         }

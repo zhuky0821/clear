@@ -15,12 +15,7 @@ public class InterfaceTableQueryMapperImpl implements InterfaceTableQueryMapper 
 
     @Override
     public List<Tjsmx> jsmx(String shareholderId) {
-        List<Tjsmx> jsmxs = new ArrayList<>();
-        List<Object> all = ormUtil.querySingleTable("Tjsmx", "zqzh = ?", shareholderId);
-        for (Object o : all) {
-            Tjsmx jsmx = (Tjsmx) o;
-            jsmxs.add(jsmx);
-        }
-        return jsmxs;
+        List<Tjsmx> all = ormUtil.querySingleTable("Tjsmx", "zqzh = ?", shareholderId);
+        return all;
     }
 }
