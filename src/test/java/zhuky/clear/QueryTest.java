@@ -12,9 +12,11 @@ import zhuky.clear.entity.Tshareholder;
 import zhuky.clear.util.ORMUtil;
 import zhuky.clear.util.StringUtil;
 
+import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
@@ -108,6 +110,40 @@ public class QueryTest {
         List<Object> tshareholder = ormUtil.querySingleTable("Tproduct", "product_id = ?", args);
         for (Object o : tshareholder) {
             System.out.println(o);
+        }
+    }
+
+    @Test
+    void  testOrm4(){
+        Class clazz = Tbond.class;
+        try {
+            SqlFieldsQuery sqlFieldsQuery = new SqlFieldsQuery("SELECT security_id, bond_interest from tbond");
+            List<List<?>> all = client.query(sqlFieldsQuery).getAll();
+
+            Constructor constructor = clazz.getConstructor();
+
+            List<Object> os = new ArrayList<>();
+            Field[] declaredFields = clazz.getDeclaredFields();
+            for (List<?> objects : all) {
+                Object o = constructor.newInstance();
+                for(int i=0; i<declaredFields.length; i++){
+                    Field declaredField = declaredFields[i];
+                    declaredField.setAccessible(true);
+                    declaredField.set(o, objects.get(i));
+                }
+                os.add(o);
+            }
+
+            System.out.println(os);
+
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
         }
     }
 
