@@ -1,10 +1,7 @@
 package zhuky.clear.dao.impl;
 
-import org.apache.ignite.cache.query.SqlFieldsQuery;
-import org.apache.ignite.client.IgniteClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import zhuky.clear.entity.TFileColumnConfig;
-import zhuky.clear.entity.Tshareholder;
 import zhuky.clear.util.ORMUtil;
 
 import java.util.ArrayList;

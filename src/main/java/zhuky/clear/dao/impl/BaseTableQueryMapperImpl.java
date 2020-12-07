@@ -1,7 +1,5 @@
 package zhuky.clear.dao.impl;
 
-import org.apache.ignite.cache.query.SqlFieldsQuery;
-import org.apache.ignite.client.IgniteClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import zhuky.clear.dao.BaseTableQueryMapper;
@@ -9,9 +7,7 @@ import zhuky.clear.entity.Tsecurity;
 import zhuky.clear.entity.Tshareholder;
 import zhuky.clear.util.ORMUtil;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Component
