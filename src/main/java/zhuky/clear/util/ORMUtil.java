@@ -53,6 +53,34 @@ public class ORMUtil {
         return res;
     }
 
+    public <E> E convertTObject2(List<?> list, String className){
+        E res = null;
+
+        try {
+            Class clazz = Class.forName(className);
+            Constructor allFieldsConstruct = null;
+            Field[] declaredFields = clazz.getDeclaredFields();
+            Constructor constructor = clazz.getConstructor();
+            res = (E) constructor.newInstance();
+            for(int i=0; i<declaredFields.length; i++){
+                Field declaredField = declaredFields[i];
+                declaredField.setAccessible(true);
+                declaredField.set(res, list.get(i));
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+
+        return res;
+    }
 
     public String getSql(String classFullName){
         StringBuilder sql = new StringBuilder();
@@ -75,17 +103,14 @@ public class ORMUtil {
     }
 
     public <E> List<E> queryAll(String sql, String classFullName, Object... args){
-
         List<E> res = new ArrayList<>();
         List<List<?>> all = client.query(new SqlFieldsQuery(sql).setArgs(args)).getAll();
         for (List<?> objects : all) {
-            E e = convertTObject(objects, classFullName);
+            E e = convertTObject2(objects, classFullName);
             res.add(e);
         }
-
         return res;
     }
-
 
     public <E> List<E> querySingleTable(String className, String condition, Object... args){
         String classFullName = "zhuky.clear.entity." + className;
