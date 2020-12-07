@@ -5,15 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import zhuky.clear.service.InitService;
-import zhuky.clear.util.FileUtil;
 import zhuky.clear.util.SqlUtil;
-
-import javax.sql.DataSource;
-import java.io.File;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 @Service
 public class InitServiceImpl implements InitService {
