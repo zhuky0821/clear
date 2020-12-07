@@ -9,7 +9,7 @@ delete from tshareholder;
 delete from tmarket;
 delete from ttradedate;
 
---SET STREAMING ON;
+SET STREAMING ON;
 
 insert into tfilecolumnconfig (table_name, column_name, begin_pos, end_pos) values ('tjsmx','scdm', 0, 1);
 insert into tfilecolumnconfig (table_name, column_name, begin_pos, end_pos) values ('tjsmx','jllx', 2, 4);

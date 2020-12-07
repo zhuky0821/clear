@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import zhuky.clear.config.IgniteConfig;
 import zhuky.clear.dao.BaseTableQueryMapper;
 import zhuky.clear.dao.FileColumnConfigMapper;
 import zhuky.clear.entity.TFileColumnConfig;
@@ -180,6 +181,11 @@ class ClearApplicationTests {
 		logger.info("主线程查询证券信息结束");
 	}
 
+	@Autowired
+	IgniteConfig igniteConfig;
+
+	//删除和查询都必须加getall
+	//SqlFieldsQuery每次只能执行一句sql
 	@Test
 	void testSqlQueryFiled(){
 		logger.info("测试场查询");
@@ -187,6 +193,13 @@ class ClearApplicationTests {
 		QueryCursor<List<?>> query = ignite.query(sqlFieldsQuery);
 		List<List<?>> all = query.getAll();
 		logger.info("查询结果：{}", all);
+
+		logger.info("测试删除");
+		ignite.query(new SqlFieldsQuery("delete from tbond")).getAll();
+
+		System.out.println("client: " + igniteConfig.getIgniteAddress());
+
+
 	}
 
 }
