@@ -6,8 +6,10 @@ import zhuky.clear.entity.Tshareholder;
 import java.util.List;
 
 public interface BaseTableQueryMapper {
-    List<Tshareholder> getProductUseShareholder(String productIdStr);
+    List<Tshareholder> getProductUseShareholder(int productId);
 
     Tsecurity getSecurity(String securityCode, int mktId);
+
+    Tsecurity getSecurityById(int securityId);
 
 }

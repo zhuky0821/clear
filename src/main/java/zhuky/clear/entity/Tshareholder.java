@@ -12,5 +12,6 @@ public class Tshareholder {
     private int mktId;
     private String shareholderName;
     private String bindSeat;
+    private int combiId;
     private String useProductList;
 }
