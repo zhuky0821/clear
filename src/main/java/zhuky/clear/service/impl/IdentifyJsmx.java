@@ -3,7 +3,7 @@ package zhuky.clear.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import zhuky.clear.dao.BaseTableQueryMapper;
 import zhuky.clear.dao.InterfaceTableQueryMapper;
-import zhuky.clear.entity.TTmpCurrents;
+import zhuky.clear.entity.Ttmpcurrents;
 import zhuky.clear.entity.Tjsmx;
 import zhuky.clear.entity.Tsecurity;
 import zhuky.clear.entity.Tshareholder;
@@ -22,11 +22,11 @@ public class IdentifyJsmx implements Identify {
     BaseTableQueryMapper baseTableQueryMapper;
 
     @Override
-    public List<TTmpCurrents> identifyFile(int productId, int businessDate) {
+    public List<Ttmpcurrents> identifyFile(int productId, int businessDate) {
 
         List<Tshareholder> productUseShareholder = baseTableQueryMapper.getProductUseShareholder(productId);
 
-        List<TTmpCurrents> tmpCurrentsList = new ArrayList<>();
+        List<Ttmpcurrents> tmpCurrentsList = new ArrayList<>();
 
         for (Tshareholder tshareholder : productUseShareholder) {
             if(tshareholder.getMktId() != 1) {
@@ -63,7 +63,7 @@ public class IdentifyJsmx implements Identify {
                     continue;
                 }
 
-                TTmpCurrents tmpCurrents = new TTmpCurrents();
+                Ttmpcurrents tmpCurrents = new Ttmpcurrents();
                 String posStr = "tjsmx_" + productId + "_" + tjsmx.getRecordId();
                 tmpCurrents.setPosStr(posStr);
                 tmpCurrents.setProductId(productId);

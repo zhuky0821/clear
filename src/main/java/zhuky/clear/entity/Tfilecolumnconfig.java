@@ -3,12 +3,13 @@ package zhuky.clear.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.math.BigDecimal;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Tbond {
-    private int securityId;
-    private BigDecimal bondInterest;
+public class Tfilecolumnconfig {
+    private String tableName;
+    private String columnName;
+    private int beginPos;
+    private int endPos;
 }

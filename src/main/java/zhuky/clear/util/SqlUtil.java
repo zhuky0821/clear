@@ -29,7 +29,7 @@ public class SqlUtil {
         Statement statement = null;
         try {
             logger.debug("读取脚本文件内容开始");
-            File file = fileUtil.getClassPathFile(path);
+            File file = FileUtil.getClassPathFile(path);
             String fileSql = fileUtil.readFileByLines(file);
             logger.debug("脚本文件内容：{}",  fileSql);
 

@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import zhuky.clear.config.IgniteConfig;
 import zhuky.clear.dao.BaseTableQueryMapper;
-import zhuky.clear.entity.TFileColumnConfig;
+import zhuky.clear.entity.Tfilecolumnconfig;
 import zhuky.clear.entity.ignite.TshareholderKey;
 import zhuky.clear.entity.ignite.TshareholderValue;
 
@@ -82,8 +82,8 @@ class ClearApplicationTests {
 	BaseTableQueryMapper baseTableQueryMapper;
 	@Test
 	void testFileColumnConfig(){
-		List<TFileColumnConfig> tjsmxs = baseTableQueryMapper.getFileColumnConfigs("tjsmx");
-		for (TFileColumnConfig tjsmx : tjsmxs) {
+		List<Tfilecolumnconfig> tjsmxs = baseTableQueryMapper.getFileColumnConfigs("tjsmx");
+		for (Tfilecolumnconfig tjsmx : tjsmxs) {
 			System.out.println("private  " + tjsmx.getColumnName() + ";");
 		}
 

@@ -42,8 +42,23 @@ public class FileUtil {
         return str.toString();
     }
 
-    public File getClassPathFile(String path) throws IOException {
+    /**
+     * 获取类路径下的资源文件
+     * @param path
+     * @return
+     * @throws IOException
+     */
+    public static File getClassPathFile(String path) throws IOException {
         ClassPathResource resource = new ClassPathResource(path);
         return resource.getFile();
     }
+
+    /**
+     * 获取工程所在根目录地址
+     * @return
+     */
+    public static String getProjectPath(){
+        return System.getProperty("user.dir");
+    }
+
 }

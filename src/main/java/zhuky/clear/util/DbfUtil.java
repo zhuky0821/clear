@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import zhuky.clear.dao.BaseTableQueryMapper;
-import zhuky.clear.entity.TFileColumnConfig;
+import zhuky.clear.entity.Tfilecolumnconfig;
 import zhuky.clear.exception.BusinessErrorException;
 
 import java.io.*;
@@ -47,7 +47,7 @@ public class DbfUtil {
 
 
             //获取导入配置
-            List<TFileColumnConfig> fileColumnConfigs = baseTableQueryMapper.getFileColumnConfigs(tableName);
+            List<Tfilecolumnconfig> fileColumnConfigs = baseTableQueryMapper.getFileColumnConfigs(tableName);
 
 
 

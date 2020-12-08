@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TFileColumnConfig {
-    private String tableName;
-    private String columnName;
-    private int beginPos;
-    private int endPos;
+public class Ttradedate {
+    private int tradedayTypeId;
+    private int sysDate;
+    private int tradedayFlag;
+    private int settledayFlag;
 }

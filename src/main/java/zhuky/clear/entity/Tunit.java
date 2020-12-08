@@ -3,14 +3,14 @@ package zhuky.clear.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.math.BigDecimal;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Tproduct {
+public class Tunit {
     private int productId;
-    private String productCode;
-    private String productName;
-    private BigDecimal productShare;
+    private int unitId;
+    private String unitCode;
+    private String unitName;
+    private int defaultFlag;
 }
