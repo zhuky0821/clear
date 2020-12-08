@@ -1,5 +1,7 @@
 package zhuky.clear.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import zhuky.clear.config.IgniteConfig;
@@ -10,7 +12,7 @@ import java.sql.SQLException;
 
 @Component
 public class IgniteConnUtil {
-
+    private static final Logger logger = LoggerFactory.getLogger(IgniteConnUtil.class);
     @Autowired
     private IgniteConfig igniteConfig;
 
@@ -21,9 +23,9 @@ public class IgniteConnUtil {
             Class.forName("org.apache.ignite.IgniteJdbcThinDriver");
             connection = DriverManager.getConnection("jdbc:ignite:thin://"+igniteConfig.getIgniteAddress());
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            logger.error("找不到Ignite连接库");
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Ignite连接失败,地址：{}", igniteConfig.getIgniteAddress());
         }
 
         return connection;

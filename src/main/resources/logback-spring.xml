@@ -50,10 +50,12 @@
     <appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!--定义错误日志输出的路径-->
         <file>${log.path}/error.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${log.path}/error-%d{yyyy-MM-dd}.log</fileNamePattern>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>
+                ${log.path}/error-%d{yyyy-MM-dd}.%i.log
+            </fileNamePattern>
             <!--60天的时间周期，日志量最大20GB-->
-            <maxHistory>60</maxHistory>
+            <maxFileSize>100MB</maxFileSize>
             <!-- 该属性在 1.1.6版本后 才开始支持-->
             <totalSizeCap>20GB</totalSizeCap>
         </rollingPolicy>
@@ -88,5 +90,5 @@
     <logger name="org.mybatis" level="ERROR" />
     <logger name="org.springframework" level="INFO" />
     <logger name="org.apache.ignite" level="INFO" />
-    <logger name="zhuky.clear" level="DEBUG" />
+    <logger name="zhuky.clear" level="INFO" />
 </configuration>

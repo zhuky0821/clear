@@ -6,10 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import zhuky.clear.exception.BusinessErrorException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,67 +20,28 @@ public class ORMUtil {
     @Autowired
     private IgniteClient client;
 
-    public <E> E convertTObject(List<?> list, String className){
+    public <E> E convert2Object(List<?> list, String className) {
         E res = null;
 
         try {
             Class clazz = Class.forName(className);
-            Constructor allFieldsConstruct = null;
-            Field[] declaredFields = clazz.getDeclaredFields();
-            Constructor[] constructors = clazz.getConstructors();
-            for (Constructor constructor : constructors) {
-                if(constructor.getParameterCount() == declaredFields.length){
-                    allFieldsConstruct = constructor;
-                    break;
-                }
-            }
-            if(allFieldsConstruct == null){
-                throw new RuntimeException("没有找到全参构造器");
-            }
-
-            res = (E) allFieldsConstruct.newInstance(list.toArray());
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
-
-        return res;
-    }
-
-    public <E> E convertTObject2(List<?> list, String className){
-        E res = null;
-
-        try {
-            Class clazz = Class.forName(className);
-            Constructor allFieldsConstruct = null;
             Field[] declaredFields = clazz.getDeclaredFields();
             Constructor constructor = clazz.getConstructor();
+
             res = (E) constructor.newInstance();
             for(int i=0; i<declaredFields.length; i++){
-                Field declaredField = declaredFields[i];
-                declaredField.setAccessible(true);
-                declaredField.set(res, list.get(i));
+                Field field = declaredFields[i];
+                field.setAccessible(true);
+                field.set(res, list.get(i));
             }
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            logger.error("查询结果反射出对象出现异常：{}", e.getMessage());
+            throw new BusinessErrorException("1000", "查询结果反射出对象出现异常：" + e.getMessage());
         }
 
         return res;
     }
+
 
     public String getSql(String classFullName){
         StringBuilder sql = new StringBuilder();
@@ -103,14 +64,16 @@ public class ORMUtil {
     }
 
     public <E> List<E> queryAll(String sql, String classFullName, Object... args){
+
         List<E> res = new ArrayList<>();
         List<List<?>> all = client.query(new SqlFieldsQuery(sql).setArgs(args)).getAll();
         for (List<?> objects : all) {
-            E e = convertTObject2(objects, classFullName);
+            E e = convert2Object(objects, classFullName);
             res.add(e);
         }
         return res;
     }
+
 
     public <E> List<E> querySingleTable(String className, String condition, Object... args){
         String classFullName = "zhuky.clear.entity." + className;
@@ -120,7 +83,7 @@ public class ORMUtil {
             sqlBulider.append(" where ").append(condition);
         }
         String sql = sqlBulider.toString();
-        logger.info("执行单表查询sql：{}", sql);
+        logger.trace("执行单表查询sql：{}", sql);
         return queryAll(sql, classFullName, args);
     }
 }

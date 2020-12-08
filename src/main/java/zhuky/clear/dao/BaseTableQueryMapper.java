@@ -1,5 +1,6 @@
 package zhuky.clear.dao;
 
+import zhuky.clear.entity.Tfilecolumnconfig;
 import zhuky.clear.entity.Tsecurity;
 import zhuky.clear.entity.Tshareholder;
 
@@ -12,4 +13,5 @@ public interface BaseTableQueryMapper {
 
     Tsecurity getSecurityById(int securityId);
 
+    List<Tfilecolumnconfig> getFileColumnConfigs(String tableName);
 }

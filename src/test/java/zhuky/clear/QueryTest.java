@@ -3,10 +3,13 @@ package zhuky.clear;
 import org.apache.ignite.cache.query.SqlFieldsQuery;
 import org.apache.ignite.client.IgniteClient;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import zhuky.clear.dao.BaseTableQueryMapper;
 import zhuky.clear.entity.Tbond;
+import zhuky.clear.entity.Tproduct;
 import zhuky.clear.entity.Tsecurity;
 import zhuky.clear.entity.Tshareholder;
 import zhuky.clear.util.ORMUtil;
@@ -21,6 +24,7 @@ import java.util.List;
 
 @SpringBootTest
 public class QueryTest {
+    private static final Logger logger = LoggerFactory.getLogger(QueryTest.class);
 
     @Autowired
     BaseTableQueryMapper baseTableQueryMapper;
@@ -106,7 +110,7 @@ public class QueryTest {
 
     @Test
     void testOrm3(){
-        List<Tshareholder> tshareholder = ormUtil.querySingleTable("Tproduct", "product_id = ?", 1);
+        List<Tproduct> tshareholder = ormUtil.querySingleTable("Tproduct", "product_id = ?", 1);
         for (Object o : tshareholder) {
             System.out.println(o);
         }
@@ -144,6 +148,25 @@ public class QueryTest {
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 100000次查询大概耗时114s
+     * 平均每次查询（包含反射出对象）耗时1.14ms
+     */
+    @Test
+    void testOrmxn(){
+        logger.info("测试ORM性能开始");
+        for (int i = 0; i < 10000; i++) {
+
+            Tsecurity security = baseTableQueryMapper.getSecurity("600001", 1);
+            if(i % 10000 == 0 && i > 0){
+                logger.info(security.toString());
+            }
+        }
+        //baseTableQueryMapper.getFileColumnConfigs("tjsmx");
+
+        logger.info("测试ORM性能结束");
     }
 
 }

@@ -3,12 +3,11 @@ package zhuky.clear.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.math.BigDecimal;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class Tsecurity {
     private int securityId;
     private String securityCode;

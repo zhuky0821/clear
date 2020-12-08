@@ -15,7 +15,7 @@ public class InitServiceImpl implements InitService {
     private SqlUtil sqlUtil;
 
     @Override
-    public void initSchema() throws Exception {
+    public void initSchema() {
         logger.info("处理表结构重建开始");
 
         sqlUtil.execSqlFile("db/schema.sql");
@@ -24,7 +24,7 @@ public class InitServiceImpl implements InitService {
     }
 
     @Override
-    public void initData() throws Exception {
+    public void initData() {
         logger.info("处理表数据开始");
 
         sqlUtil.execSqlFile("db/data.sql");

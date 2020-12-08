@@ -1,9 +1,9 @@
 package zhuky.clear.service;
 
-import zhuky.clear.entity.TTmpCurrents;
+import zhuky.clear.entity.Ttmpcurrents;
 
 import java.util.List;
 
 public interface Identify {
-    List<TTmpCurrents> identifyFile(int productId, int businessDate);
+    List<Ttmpcurrents> identifyFile(int productId, int businessDate);
 }
