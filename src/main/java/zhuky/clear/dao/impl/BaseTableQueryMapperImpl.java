@@ -3,6 +3,7 @@ package zhuky.clear.dao.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import zhuky.clear.dao.BaseTableQueryMapper;
+import zhuky.clear.entity.TFileColumnConfig;
 import zhuky.clear.entity.Tsecurity;
 import zhuky.clear.entity.Tshareholder;
 import zhuky.clear.util.ORMUtil;
@@ -32,5 +33,11 @@ public class BaseTableQueryMapperImpl implements BaseTableQueryMapper {
     public Tsecurity getSecurityById(int securityId) {
         List<Tsecurity> all = ormUtil.querySingleTable("Tsecurity", "security_id = ?", securityId);
         return all.get(0);
+    }
+
+    @Override
+    public List<TFileColumnConfig> getFileColumnConfigs(String tableName) {
+        List<TFileColumnConfig> all = ormUtil.querySingleTable("TFileColumnConfig", "table_name = ? order by begin_pos", tableName);
+        return all;
     }
 }
