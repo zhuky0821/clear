@@ -14,7 +14,7 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IdentifyJsmx implements Identify {
+public class IdentifyImpl implements Identify {
 
     @Autowired
     InterfaceTableQueryMapper interfaceTableQueryMapper;
@@ -36,22 +36,22 @@ public class IdentifyJsmx implements Identify {
             List<Tjsmx> tjsmxes = interfaceTableQueryMapper.jsmx(tshareholder.getShareholderId());
             for (Tjsmx tjsmx : tjsmxes) {
                 int businFlag;
-                if("001".equals(tjsmx.getYwlx().trim()) && "B".equals(tjsmx.getYwlx().trim())){
+                if("001".equals(tjsmx.getYwlx().trim()) && "B".equals(tjsmx.getMmbz().trim())){
                     //股票买入
                     businFlag = 2000;
-                }else if("001".equals(tjsmx.getYwlx().trim()) && "S".equals(tjsmx.getYwlx().trim())){
+                }else if("001".equals(tjsmx.getYwlx().trim()) && "S".equals(tjsmx.getMmbz().trim())){
                     //股票卖出
                     businFlag = 2001;
-                }else if("003".equals(tjsmx.getYwlx().trim()) && "B".equals(tjsmx.getYwlx().trim())){
+                }else if("003".equals(tjsmx.getYwlx().trim()) && "B".equals(tjsmx.getMmbz().trim())){
                     //债券买入
                     businFlag = 2500;
-                }else if("003".equals(tjsmx.getYwlx().trim()) && "S".equals(tjsmx.getYwlx().trim())){
+                }else if("003".equals(tjsmx.getYwlx().trim()) && "S".equals(tjsmx.getMmbz().trim())){
                     //债券卖出
                     businFlag = 2501;
-                }else if("023".equals(tjsmx.getYwlx().trim()) && "B".equals(tjsmx.getYwlx().trim())){
+                }else if("023".equals(tjsmx.getYwlx().trim()) && "B".equals(tjsmx.getMmbz().trim())){
                     //融资回购
                     businFlag = 2504;
-                }else if("023".equals(tjsmx.getYwlx().trim()) && "S".equals(tjsmx.getYwlx().trim())){
+                }else if("023".equals(tjsmx.getYwlx().trim()) && "S".equals(tjsmx.getMmbz().trim())){
                     //融券回购
                     businFlag = 2506;
                 }else {
