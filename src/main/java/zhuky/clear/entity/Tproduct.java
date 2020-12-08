@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Tproduct {
-    private int product_id;
+    private int productId;
     private String productCode;
     private String productName;
     private BigDecimal productShare;

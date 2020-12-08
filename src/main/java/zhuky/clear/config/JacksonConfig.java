@@ -13,7 +13,7 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import java.io.IOException;
 
 @Configuration
-public class jacksonConfig {
+public class JacksonConfig {
 
     @Bean
     @Primary

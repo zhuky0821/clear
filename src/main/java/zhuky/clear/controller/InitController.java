@@ -21,13 +21,13 @@ public class InitController {
 
     @GetMapping("/schema")
     @ApiOperation(value = "初始化数据库表结构")
-    public void SchemaInitial() {
+    public void schemaInitial() {
         initService.initSchema();
     }
 
     @GetMapping("/data")
     @ApiOperation(value = "初始化数据库基础数据")
-    public void DataInitial() {
+    public void dataInitial() {
         initService.initData();
     }
 }

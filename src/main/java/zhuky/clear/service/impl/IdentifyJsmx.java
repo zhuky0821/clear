@@ -29,27 +29,29 @@ public class IdentifyJsmx implements Identify {
         List<TTmpCurrents> tmpCurrentsList = new ArrayList<>();
 
         for (Tshareholder tshareholder : productUseShareholder) {
-            if(tshareholder.getMktId() != 1) continue;
+            if(tshareholder.getMktId() != 1) {
+                continue;
+            }
 
             List<Tjsmx> tjsmxes = interfaceTableQueryMapper.jsmx(tshareholder.getShareholderId());
             for (Tjsmx tjsmx : tjsmxes) {
                 int businFlag;
-                if(tjsmx.getYwlx().trim().equals("001") && tjsmx.getYwlx().trim().equals("B")){
+                if("001".equals(tjsmx.getYwlx().trim()) && "B".equals(tjsmx.getYwlx().trim())){
                     //股票买入
                     businFlag = 2000;
-                }else if(tjsmx.getYwlx().trim().equals("001") && tjsmx.getYwlx().trim().equals("S")){
+                }else if("001".equals(tjsmx.getYwlx().trim()) && "S".equals(tjsmx.getYwlx().trim())){
                     //股票卖出
                     businFlag = 2001;
-                }else if(tjsmx.getYwlx().trim().equals("003") && tjsmx.getYwlx().trim().equals("B")){
+                }else if("003".equals(tjsmx.getYwlx().trim()) && "B".equals(tjsmx.getYwlx().trim())){
                     //债券买入
                     businFlag = 2500;
-                }else if(tjsmx.getYwlx().trim().equals("003") && tjsmx.getYwlx().trim().equals("S")){
+                }else if("003".equals(tjsmx.getYwlx().trim()) && "S".equals(tjsmx.getYwlx().trim())){
                     //债券卖出
                     businFlag = 2501;
-                }else if(tjsmx.getYwlx().trim().equals("023") && tjsmx.getYwlx().trim().equals("B")){
+                }else if("023".equals(tjsmx.getYwlx().trim()) && "B".equals(tjsmx.getYwlx().trim())){
                     //融资回购
                     businFlag = 2504;
-                }else if(tjsmx.getYwlx().trim().equals("023") && tjsmx.getYwlx().trim().equals("S")){
+                }else if("023".equals(tjsmx.getYwlx().trim()) && "S".equals(tjsmx.getYwlx().trim())){
                     //融券回购
                     businFlag = 2506;
                 }else {
@@ -57,7 +59,9 @@ public class IdentifyJsmx implements Identify {
                 }
 
                 Tsecurity tsecurity = baseTableQueryMapper.getSecurity(tjsmx.getZqdm1(), 1);
-                if(tsecurity == null) continue;
+                if(tsecurity == null) {
+                    continue;
+                }
 
                 TTmpCurrents tmpCurrents = new TTmpCurrents();
                 String posStr = "tjsmx_" + productId + "_" + tjsmx.getRecordId();
@@ -74,7 +78,7 @@ public class IdentifyJsmx implements Identify {
                 tmpCurrents.setSubjectId(0);
                 tmpCurrents.setSubjectOccurAmt(new BigDecimal(0));
                 tmpCurrents.setOccurAmt(tjsmx.getSjsf());
-                tmpCurrents.setOccurQty((tjsmx.getZqlb().trim().equals("GZ")) ? tjsmx.getSl().divide(new BigDecimal(100), 0, RoundingMode.FLOOR) : tjsmx.getSl() );
+                tmpCurrents.setOccurQty(("GZ".equals(tjsmx.getZqlb().trim())) ? tjsmx.getSl().divide(new BigDecimal(100), 0, RoundingMode.FLOOR) : tjsmx.getSl() );
                 tmpCurrents.setRemark(tjsmx.getBz());
                 tmpCurrents.setReportSerialId(Integer.parseInt(tjsmx.getSqbh()));
                 tmpCurrents.setSecurityType(tsecurity.getSecurityType());

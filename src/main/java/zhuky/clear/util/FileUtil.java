@@ -21,7 +21,9 @@ public class FileUtil {
             String tempString = null;
             // 一次读入一行，直到读入null为文件结束
             while ((tempString = reader.readLine()) != null) {
-                if(tempString.trim().length() == 0) continue;
+                if(tempString.trim().length() == 0) {
+                    continue;
+                }
                 str = str.append(tempString + "\r\n");
             }
             reader.close();

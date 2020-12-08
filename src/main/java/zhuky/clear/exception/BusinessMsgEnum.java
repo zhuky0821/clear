@@ -1,7 +1,9 @@
 package zhuky.clear.exception;
 
 public enum BusinessMsgEnum {
+    //系统异常
     UNEXPECTED_EXCEPTION("500", "系统发生异常，请联系管理员！"),
+    //反射结果异常
     OBJECT_CONVERT_EXCEPTION("501", "查询结果反射出对象出现异常");
 
     private String code;

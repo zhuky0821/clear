@@ -1,6 +1,5 @@
 package zhuky.clear.util;
 
-import org.apache.ignite.cache.query.FieldsQueryCursor;
 import org.apache.ignite.cache.query.SqlFieldsQuery;
 import org.apache.ignite.client.IgniteClient;
 import org.slf4j.Logger;
@@ -8,11 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import zhuky.clear.exception.BusinessErrorException;
-import zhuky.clear.exception.JsonResult;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +20,7 @@ public class ORMUtil {
     @Autowired
     private IgniteClient client;
 
-    public <E> E convertTObject(List<?> list, String className) {
+    public <E> E convert2Object(List<?> list, String className) {
         E res = null;
 
         try {
@@ -70,25 +67,21 @@ public class ORMUtil {
 
         List<E> res = new ArrayList<>();
         List<List<?>> all = client.query(new SqlFieldsQuery(sql).setArgs(args)).getAll();
-        //logger.trace("查询数据库出结果,开始反射出对象");
         for (List<?> objects : all) {
-            E e = convertTObject(objects, classFullName);
+            E e = convert2Object(objects, classFullName);
             res.add(e);
         }
-        //logger.trace("单表查询结束");
         return res;
     }
 
 
     public <E> List<E> querySingleTable(String className, String condition, Object... args){
-        //logger.trace("单表查询开始,组sql");
         String classFullName = "zhuky.clear.entity." + className;
         StringBuilder sqlBulider = new StringBuilder();
         sqlBulider.append("select ").append(getSql(classFullName)).append(" from ").append(className);
         if(condition != null && condition.trim().length() > 0){
             sqlBulider.append(" where ").append(condition);
         }
-        //logger.trace("组sql结束");
         String sql = sqlBulider.toString();
         logger.trace("执行单表查询sql：{}", sql);
         return queryAll(sql, classFullName, args);
