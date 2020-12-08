@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import zhuky.clear.config.IgniteConfig;
+import zhuky.clear.exception.BusinessErrorException;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,7 +24,7 @@ public class SqlUtil {
     @Autowired
     IgniteConnUtil igniteConnUtil;
 
-    public void execSqlFile(String path) throws IOException, SQLException {
+    public void execSqlFile(String path){
         Connection connection = null;
         Statement statement = null;
         try {
@@ -36,19 +37,24 @@ public class SqlUtil {
             statement = connection.createStatement();
             statement.executeUpdate(fileSql);
 
-        } catch (IOException e) {
-            logger.error("找不到脚本文件");
-            throw e;
-        } catch (SQLException e) {
+        } catch (Exception e) {
             logger.error("执行脚本文件错误，错误信息：{}", e.getMessage());
-            throw e;
+            throw new BusinessErrorException("1005", "执行脚本文件错误，错误信息：" + e.getMessage());
         }
         finally {
             if(statement != null){
-                statement.close();
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    logger.error("statement关闭失败");
+                }
             }
             if(connection != null){
-                connection.close();
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    logger.error("connection关闭失败");
+                }
             }
         }
     }

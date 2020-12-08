@@ -8,7 +8,6 @@ import zhuky.clear.entity.Tsecurity;
 import zhuky.clear.entity.Tshareholder;
 import zhuky.clear.util.ORMUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component

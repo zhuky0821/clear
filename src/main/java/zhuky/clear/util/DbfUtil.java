@@ -4,8 +4,9 @@ import com.linuxense.javadbf.DBFReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import zhuky.clear.dao.FileColumnConfigMapper;
+import zhuky.clear.dao.BaseTableQueryMapper;
 import zhuky.clear.entity.TFileColumnConfig;
+import zhuky.clear.exception.BusinessErrorException;
 
 import java.io.*;
 import java.util.List;
@@ -14,9 +15,9 @@ public class DbfUtil {
     private static final Logger logger = LoggerFactory.getLogger(DbfUtil.class);
 
     @Autowired
-    FileColumnConfigMapper fileColumnConfigMapper;
+    BaseTableQueryMapper baseTableQueryMapper;
 
-    public void dbf2csv(String fileName, String tableName) throws FileNotFoundException {
+    public void dbf2csv(String fileName, String tableName){
         logger.info("Dbf文件：{}，转换成csv开始", fileName);
 
         DataInputStream dataInputStream = null;
@@ -46,15 +47,16 @@ public class DbfUtil {
 
 
             //获取导入配置
-            List<TFileColumnConfig> fileColumnConfigs = fileColumnConfigMapper.getFileColumnConfigs(tableName);
+            List<TFileColumnConfig> fileColumnConfigs = baseTableQueryMapper.getFileColumnConfigs(tableName);
 
 
 
         } catch (FileNotFoundException e) {
-            logger.error("文件{}找不到", fileName);
-            throw e;
+            logger.error("文件{}找不到,{}", fileName, e.getMessage());
+            throw new BusinessErrorException("1001", "文件" + fileName + "找不到");
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("文件{}读取失败,{}", fileName, e.getMessage());
+            throw new BusinessErrorException("1002", "文件" + fileName + "读取失败，错误信息：" + e.getMessage());
         } finally {
             if(reader != null){
                 reader.close();

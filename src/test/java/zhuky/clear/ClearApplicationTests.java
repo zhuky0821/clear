@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import zhuky.clear.config.IgniteConfig;
 import zhuky.clear.dao.BaseTableQueryMapper;
-import zhuky.clear.dao.FileColumnConfigMapper;
 import zhuky.clear.entity.TFileColumnConfig;
 import zhuky.clear.entity.ignite.TshareholderKey;
 import zhuky.clear.entity.ignite.TshareholderValue;
@@ -80,10 +79,10 @@ class ClearApplicationTests {
 	}
 
 	//@Autowired
-	FileColumnConfigMapper fileColumnConfigMapper;
+	BaseTableQueryMapper baseTableQueryMapper;
 	@Test
 	void testFileColumnConfig(){
-		List<TFileColumnConfig> tjsmxs = fileColumnConfigMapper.getFileColumnConfigs("tjsmx");
+		List<TFileColumnConfig> tjsmxs = baseTableQueryMapper.getFileColumnConfigs("tjsmx");
 		for (TFileColumnConfig tjsmx : tjsmxs) {
 			System.out.println("private  " + tjsmx.getColumnName() + ";");
 		}
@@ -122,21 +121,19 @@ class ClearApplicationTests {
 		System.out.println("value:" + value);
 	}
 
-	///@Autowired
-	BaseTableQueryMapper baseTableQueryMapper;
 	@Test
 	void testxn(){
 		logger.info("测试证券信息查询性能开始");
 		//ClientCache cache = ignite.cache("tshareholder");
-		for (int i = 0; i < 1000000; i++) {
+		for (int i = 0; i < 100000; i++) {
 			SqlFieldsQuery sqlFieldsQuery = new SqlFieldsQuery(new SqlFieldsQuery("select * from tshareholder where shareholder_id = ? and mkt_id = ?"));
 			sqlFieldsQuery.setArgs("holder14", 1);
-			QueryCursor query = ignite.query(sqlFieldsQuery);
-
+			List<List<?>> all = ignite.query(sqlFieldsQuery).getAll();
+			//getall()会严重影响性能
 			if(i % 10000 == 0){
 				logger.info("已查询次数：{}", i);
-				for (Object o : query) {
-					logger.info(o.toString());
+				for (List<?> objects : all) {
+					logger.info(objects.toString());
 				}
 			}
 		}

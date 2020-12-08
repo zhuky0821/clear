@@ -1,11 +1,14 @@
 package zhuky.clear.util;
 
+import org.apache.ignite.cache.query.FieldsQueryCursor;
 import org.apache.ignite.cache.query.SqlFieldsQuery;
 import org.apache.ignite.client.IgniteClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import zhuky.clear.exception.BusinessErrorException;
+import zhuky.clear.exception.JsonResult;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -20,34 +23,23 @@ public class ORMUtil {
     @Autowired
     private IgniteClient client;
 
-    public <E> E convertTObject(List<?> list, String className){
+    public <E> E convertTObject(List<?> list, String className) {
         E res = null;
 
         try {
             Class clazz = Class.forName(className);
-            Constructor allFieldsConstruct = null;
             Field[] declaredFields = clazz.getDeclaredFields();
-            Constructor[] constructors = clazz.getConstructors();
-            for (Constructor constructor : constructors) {
-                if(constructor.getParameterCount() == declaredFields.length){
-                    allFieldsConstruct = constructor;
-                    break;
-                }
-            }
-            if(allFieldsConstruct == null){
-                throw new RuntimeException("没有找到全参构造器");
-            }
+            Constructor constructor = clazz.getConstructor();
 
-            res = (E) allFieldsConstruct.newInstance(list.toArray());
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
+            res = (E) constructor.newInstance();
+            for(int i=0; i<declaredFields.length; i++){
+                Field field = declaredFields[i];
+                field.setAccessible(true);
+                field.set(res, list.get(i));
+            }
+        } catch (Exception e) {
+            logger.error("查询结果反射出对象出现异常：{}", e.getMessage());
+            throw new BusinessErrorException("1000", "查询结果反射出对象出现异常：" + e.getMessage());
         }
 
         return res;
@@ -78,24 +70,27 @@ public class ORMUtil {
 
         List<E> res = new ArrayList<>();
         List<List<?>> all = client.query(new SqlFieldsQuery(sql).setArgs(args)).getAll();
+        //logger.trace("查询数据库出结果,开始反射出对象");
         for (List<?> objects : all) {
             E e = convertTObject(objects, classFullName);
             res.add(e);
         }
-
+        //logger.trace("单表查询结束");
         return res;
     }
 
 
     public <E> List<E> querySingleTable(String className, String condition, Object... args){
+        //logger.trace("单表查询开始,组sql");
         String classFullName = "zhuky.clear.entity." + className;
         StringBuilder sqlBulider = new StringBuilder();
         sqlBulider.append("select ").append(getSql(classFullName)).append(" from ").append(className);
         if(condition != null && condition.trim().length() > 0){
             sqlBulider.append(" where ").append(condition);
         }
+        //logger.trace("组sql结束");
         String sql = sqlBulider.toString();
-        logger.info("执行单表查询sql：{}", sql);
+        logger.trace("执行单表查询sql：{}", sql);
         return queryAll(sql, classFullName, args);
     }
 }

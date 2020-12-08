@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
+import zhuky.clear.exception.BusinessErrorException;
 
 import java.io.*;
 
@@ -11,7 +12,7 @@ import java.io.*;
 public class FileUtil {
     Logger logger = LoggerFactory.getLogger(FileUtil.class);
 
-    public String readFileByLines(File file) throws IOException {
+    public String readFileByLines(File file) {
         StringBuffer str = new StringBuffer();
         BufferedReader reader = null;
         try {
@@ -26,7 +27,7 @@ public class FileUtil {
             reader.close();
         } catch (IOException e) {
             logger.error("文件{}读取失败，错误信息：{}",file.toString(),e.getMessage());
-            throw e;
+            throw new BusinessErrorException("1003", "文件"+file.toString()+"读取失败，错误信息：" + e.getMessage());
         } finally {
             if (reader != null) {
                 try {

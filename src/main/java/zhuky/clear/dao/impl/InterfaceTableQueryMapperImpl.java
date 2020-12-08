@@ -5,7 +5,6 @@ import zhuky.clear.dao.InterfaceTableQueryMapper;
 import zhuky.clear.entity.Tjsmx;
 import zhuky.clear.util.ORMUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class InterfaceTableQueryMapperImpl implements InterfaceTableQueryMapper {
