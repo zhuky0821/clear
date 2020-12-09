@@ -5,6 +5,7 @@ import org.apache.ignite.client.IgniteClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import zhuky.clear.service.FileImport;
 import zhuky.clear.util.CodeGeneratorUtil;
 
 import java.io.File;
@@ -30,11 +31,11 @@ public class CodeGeneratorTool {
     copy命令：
     insert into thisjsmx (SCDM, JLLX, JYFS, JSFS, YWLX, QSBZ, GHLX, JSBH, CJBH, SQBH, WTBH, JYRQ, QSRQ, JSRQ, QTRQ, WTSJ, CJSJ, XWH1, XWH2, XWHY, JSHY, TGHY, ZQZH, ZQDM1, ZQDM2, ZQLB, LTLX, QYLB, GPNF, MMBZ, SL, CJSL, ZJZH, BZ, JG1, JG2, QSJE, YHS, JSF, GHF, ZGF, SXF, QTJE1, QTJE2, QTJE3, SJSF, JGDM, FJSM)
 
-     "20190509","01","001","001","001","业务类型","060","00A","1905090004719541","成交编号","申请编号"," ","20190509","20190509","20190510","0"," "," ","交易席位","40204","JSC52","JSC52"," ","证券账号","证券代码"," ","PT","0"," ","0","买卖标志","交收数量","成交数量","10775","RMB","价格","22.88","清算金额","印花税","经手费","过户费","证管费","0.00","0.00","0.00","0.00","实际收付","0000","Ａ股交易清算"
+     "01","001","001","001","业务类型","060","00A","1905090004719541","成交编号","申请编号"," ","20190509","20190509","20190510","0"," "," ","交易席位","40204","JSC52","JSC52"," ","证券账号","证券代码"," ","PT","0"," ","0","买卖标志","交收数量","成交数量","10775","RMB","价格","22.88","清算金额","印花税","经手费","过户费","证管费","0.00","0.00","0.00","0.00","实际收付","0000","Ａ股交易清算"
      */
     @Test
     void createJsmx(){
-        String dataTemplate = "\"20190509\",\"01\",\"001\",\"001\",\"001\",\"业务类型\",\"060\",\"00A\",\"1905090004719541" +
+        String dataTemplate = "\"01\",\"001\",\"001\",\"001\",\"业务类型\",\"060\",\"00A\",\"1905090004719541" +
                 "\",\"成交编号\",\"申请编号\",\" \",\"20190509\",\"20190509\",\"20190510\",\"0\",\" \",\" \",\"seat\"," +
                 "\"40204\",\"JSC52\",\"JSC52\",\" \",\"证券账号\",\"证券代码\",\" \",\"PT\",\"0\",\" \",\"0\",\"买卖标志\"," +
                 "\"交收数量\",\"成交数量\",\"10775\",\"RMB\",\"价格\",\"22.88\",\"清算金额\",\"印花税\",\"经手费\",\"过户费\"," +
@@ -187,6 +188,12 @@ public class CodeGeneratorTool {
 
     }
 
+    @Autowired
+    FileImport fileImport;
+    @Test
+    void testImport(){
+        fileImport.importFile("d:\\jsmx.csv", "tjsmx");
+    }
 
 }
 

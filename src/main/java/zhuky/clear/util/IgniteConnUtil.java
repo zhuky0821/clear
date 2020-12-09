@@ -16,7 +16,7 @@ public class IgniteConnUtil {
     @Autowired
     private IgniteConfig igniteConfig;
 
-    public Connection getConnection(){
+    public Connection getConnection() throws ClassNotFoundException, SQLException {
         Connection connection = null;
 
         try {
@@ -24,8 +24,10 @@ public class IgniteConnUtil {
             connection = DriverManager.getConnection("jdbc:ignite:thin://"+igniteConfig.getIgniteAddress());
         } catch (ClassNotFoundException e) {
             logger.error("找不到Ignite连接库");
+            throw e;
         } catch (SQLException e) {
             logger.error("Ignite连接失败,地址：{}", igniteConfig.getIgniteAddress());
+            throw e;
         }
 
         return connection;
