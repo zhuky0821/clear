@@ -5,7 +5,6 @@ import org.apache.ignite.client.IgniteClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import zhuky.clear.entity.Tbond;
 import zhuky.clear.util.CodeGeneratorUtil;
 
 import java.io.File;
@@ -39,12 +38,13 @@ public class CodeGeneratorTool {
                 "\",\"成交编号\",\"申请编号\",\" \",\"20190509\",\"20190509\",\"20190510\",\"0\",\" \",\" \",\"seat\"," +
                 "\"40204\",\"JSC52\",\"JSC52\",\" \",\"证券账号\",\"证券代码\",\" \",\"PT\",\"0\",\" \",\"0\",\"买卖标志\"," +
                 "\"交收数量\",\"成交数量\",\"10775\",\"RMB\",\"价格\",\"22.88\",\"清算金额\",\"印花税\",\"经手费\",\"过户费\"," +
-                "\"证管费\",\"0.00\",\"0.00\",\"0.00\",\"0.00\",\"实际收付\",\"0000\",\"Ａ股交易清算\"";
+                "\"证管费\",\"0.00\",\"0.00\",\"0.00\",\"0.00\",\"实际收付\",\"0000\",\"Ａ股交易清算\",\"记录号\"";
         //每个股东，5000条买入，5000条卖出，2000条回购,成交编号为 i + 组合序号 * 100000,申请编号为 组合序号*10 + （1|2）
         //买入价格21，卖出价格22，买入200股，卖出100股，印花税 2 经手费 1 过户费 1 证管费 1 证券代码100001 和 600001循环买卖
 
         List<List<?>> all = client.query(new SqlFieldsQuery("SELECT SHAREHOLDER_ID, BIND_SEAT, COMBI_ID FROM tshareholder order by combi_id")).getAll();
         List<JsmxTemplate> jsmxTemplates = new ArrayList<>();
+        int recordId = 0;
         for (List<?> shareholder : all) {
 
             String shareholdeerId = (String) shareholder.get(0);
@@ -69,6 +69,8 @@ public class CodeGeneratorTool {
                 jsmxTemplate.setGhf(new BigDecimal(1));
                 jsmxTemplate.setZgf(new BigDecimal(1));
                 jsmxTemplate.setSjsf(new BigDecimal(-21*200 -5));
+                jsmxTemplate.setRecordId(recordId);
+                recordId ++;
 
                 jsmxTemplates.add(jsmxTemplate);
 
@@ -89,6 +91,8 @@ public class CodeGeneratorTool {
                 jsmxTemplate1.setGhf(new BigDecimal(1));
                 jsmxTemplate1.setZgf(new BigDecimal(1));
                 jsmxTemplate1.setSjsf(new BigDecimal(-21*200 -5));
+                jsmxTemplate1.setRecordId(recordId);
+                recordId ++;
 
                 jsmxTemplates.add(jsmxTemplate1);
 
@@ -109,6 +113,8 @@ public class CodeGeneratorTool {
                 jsmxTemplate2.setGhf(new BigDecimal(1));
                 jsmxTemplate2.setZgf(new BigDecimal(1));
                 jsmxTemplate2.setSjsf(new BigDecimal(22*100 -5));
+                jsmxTemplate2.setRecordId(recordId);
+                recordId ++;
 
                 jsmxTemplates.add(jsmxTemplate2);
 
@@ -129,6 +135,8 @@ public class CodeGeneratorTool {
                 jsmxTemplate3.setGhf(new BigDecimal(1));
                 jsmxTemplate3.setZgf(new BigDecimal(1));
                 jsmxTemplate3.setSjsf(new BigDecimal(22*100 -5));
+                jsmxTemplate3.setRecordId(recordId);
+                recordId ++;
 
                 jsmxTemplates.add(jsmxTemplate3);
             }
@@ -156,7 +164,8 @@ public class CodeGeneratorTool {
                         .replaceAll("经手费", String.valueOf(jsmxTemplate.getJsf()))
                         .replaceAll("过户费", String.valueOf(jsmxTemplate.getGhf()))
                         .replaceAll("证管费", String.valueOf(jsmxTemplate.getZgf()))
-                        .replaceAll("实际收付", String.valueOf(jsmxTemplate.getSjsf()));
+                        .replaceAll("实际收付", String.valueOf(jsmxTemplate.getSjsf()))
+                        .replaceAll("记录号", String.valueOf(jsmxTemplate.getRecordId()));
 
                 fileWriter.write(data);
                 fileWriter.write("\r\n");
@@ -197,6 +206,15 @@ class JsmxTemplate{
     private BigDecimal ghf;
     private BigDecimal zgf;
     private BigDecimal sjsf;
+    private int recordId;
+
+    public int getRecordId() {
+        return recordId;
+    }
+
+    public void setRecordId(int recordId) {
+        this.recordId = recordId;
+    }
 
     public String getYwlx() {
         return ywlx;
