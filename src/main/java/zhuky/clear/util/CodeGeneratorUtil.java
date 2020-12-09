@@ -20,7 +20,7 @@ public class CodeGeneratorUtil {
         this.tableNames = tableNames;
     }
 
-    @Value("${my.code.generator.tables}")
+    @Value("${clear.code.generator.tables}")
     private String tableNames;
 
     @Autowired

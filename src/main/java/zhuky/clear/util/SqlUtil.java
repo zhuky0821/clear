@@ -5,11 +5,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import zhuky.clear.config.IgniteConfig;
+import zhuky.clear.config.ClearContext;
 import zhuky.clear.exception.BusinessErrorException;
 
 import java.io.File;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -22,7 +21,7 @@ public class SqlUtil {
     private FileUtil fileUtil;
 
     @Autowired
-    IgniteConnUtil igniteConnUtil;
+    ClearContext clearContext;
 
     public void execSqlFile(String path){
         Connection connection = null;
@@ -33,7 +32,7 @@ public class SqlUtil {
             String fileSql = fileUtil.readFileByLines(file);
             logger.debug("脚本文件内容：{}",  fileSql);
 
-            connection = igniteConnUtil.getConnection();
+            connection = clearContext.getConnection();
             statement = connection.createStatement();
             statement.executeUpdate(fileSql);
 

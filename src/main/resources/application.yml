@@ -30,7 +30,9 @@ logging:
 server:
   port: 8081
 
-my:
+clear:
   code:
     generator:
       tables: all
+  threadpool:
+    size: 10

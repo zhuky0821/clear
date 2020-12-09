@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import zhuky.clear.config.IgniteConfig;
+import zhuky.clear.config.ClearContext;
 import zhuky.clear.dao.BaseTableQueryMapper;
 import zhuky.clear.entity.Tfilecolumnconfig;
 import zhuky.clear.entity.ignite.TshareholderKey;
@@ -17,6 +17,7 @@ import zhuky.clear.entity.ignite.TshareholderValue;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -177,7 +178,7 @@ class ClearApplicationTests {
 	}
 
 	@Autowired
-	IgniteConfig igniteConfig;
+	ClearContext clearContext;
 
 	//删除和查询都必须加getall
 	//SqlFieldsQuery每次只能执行一句sql
@@ -192,9 +193,118 @@ class ClearApplicationTests {
 		logger.info("测试删除");
 		ignite.query(new SqlFieldsQuery("delete from tbond")).getAll();
 
-		System.out.println("client: " + igniteConfig.getIgniteAddress());
-
 
 	}
 
+	@Test
+	void testThreadPool(){
+		ExecutorService executorService = clearContext.getExecutorService();
+		List<Future<String>> futures = new ArrayList<>();
+//		for (int i = 0; i < 15; i++) {
+//			TestThreadPool1 pool1 = new TestThreadPool1();
+//			Future<String> submit = executorService.submit(pool1);
+//			futures.add(submit);
+//		}
+//		try {
+//			System.out.println("任务提交完毕");
+//			executorService.awaitTermination(10, TimeUnit.SECONDS);
+//			System.out.println("任务执行完毕");
+//			for (Future<String> future : futures) {
+//				if(future != null && future.get().trim().length() != 0){
+//					System.out.println(future.get());
+//				}
+//			}
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		} catch (ExecutionException e) {
+//			e.printStackTrace();
+//		}
+//		//executorService.shutdownNow();
+//		System.out.println("重复使用线程池");
+//		futures = new ArrayList<>();
+//		for (int i = 0; i < 15; i++) {
+//			TestThreadPool1 pool1 = new TestThreadPool1();
+//			Future<String> submit = executorService.submit(pool1);
+//			futures.add(submit);
+//		}
+//		try {
+//			System.out.println("任务提交完毕");
+//			executorService.awaitTermination(10, TimeUnit.SECONDS);
+//			System.out.println("任务执行完毕");
+//			for (Future<String> future : futures) {
+//				if(future != null && future.get().trim().length() != 0){
+//					System.out.println(future.get());
+//				}
+//			}
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		} catch (ExecutionException e) {
+//			e.printStackTrace();
+//		}
+//
+//		System.out.println("使用invokeAll");
+//		futures = new ArrayList<>();
+//		List<TestThreadPool1> pool1s = new ArrayList<>();
+//		for (int i = 0; i < 15; i++) {
+//			TestThreadPool1 pool1 = new TestThreadPool1();
+//			pool1s.add(pool1);
+//		}
+//		try {
+//			System.out.println("开始提交任务");
+//			futures = executorService.invokeAll(pool1s);
+//			System.out.println("任务执行完毕");
+//			for (Future<String> future : futures) {
+//				if(future != null && future.get().trim().length() != 0){
+//					System.out.println(future.get());
+//				}
+//			}
+//
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		} catch (ExecutionException e) {
+//
+//
+//		}
+
+
+		System.out.println("使用invokeAll 超时时间");
+		futures = new ArrayList<>();
+		List<TestThreadPool1> pool1s = new ArrayList<>();
+		for (int i = 0; i < 15; i++) {
+			TestThreadPool1 pool1 = new TestThreadPool1();
+			pool1s.add(pool1);
+		}
+		try {
+			System.out.println("开始提交任务");
+			futures = executorService.invokeAll(pool1s, 2, TimeUnit.SECONDS);
+			System.out.println("任务执行完毕");
+			for (Future<String> future : futures) {
+				if(future != null && future.get().trim().length() != 0){
+					System.out.println(future.get());
+				}
+			}
+
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}catch (CancellationException e){
+			System.out.println("任务被取消");
+			e.printStackTrace();
+		}
+	}
+
+}
+
+class TestThreadPool1 implements Callable<String>{
+
+	@Override
+	public String call() throws Exception {
+		Thread.sleep(1500);
+		System.out.println(Thread.currentThread().getName());
+		if(Thread.currentThread().getName().equals("pool-1-thread-10")){
+			return "pool-1-thread-10 执行错误";
+		}
+		return " ";
+	}
 }

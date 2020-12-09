@@ -6,9 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import zhuky.clear.config.ClearContext;
 import zhuky.clear.exception.BusinessErrorException;
 import zhuky.clear.service.FileImport;
-import zhuky.clear.util.IgniteConnUtil;
 import zhuky.clear.util.ORMUtil;
 import zhuky.clear.util.StringUtil;
 
@@ -23,7 +23,7 @@ public class FileImportImpl implements FileImport {
     private ORMUtil ormUtil;
 
     @Autowired
-    IgniteConnUtil igniteConnUtil;
+    ClearContext clearContext;
 
     @Autowired
     IgniteClient client;
@@ -44,7 +44,7 @@ public class FileImportImpl implements FileImport {
         Connection connection = null;
         Statement statement = null;
         try {
-            connection = igniteConnUtil.getConnection();
+            connection = clearContext.getConnection();
             statement = connection.createStatement();
             statement.executeUpdate(copySql.toString());
         } catch (SQLException | ClassNotFoundException e) {
