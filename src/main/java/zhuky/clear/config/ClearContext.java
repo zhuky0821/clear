@@ -30,9 +30,12 @@ public class ClearContext {
 
     private ExecutorService executorService;
 
+    /**
+     * 获取线程池
+     * @return 定长线程池
+     */
     public ExecutorService getExecutorService() {
         if(executorService == null){
-            if(threadPoolSize == 0) threadPoolSize = 5;
             executorService = Executors.newFixedThreadPool(threadPoolSize);
         }
         return executorService;
