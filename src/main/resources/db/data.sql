@@ -8,6 +8,7 @@ delete from treporatio;
 delete from tshareholder;
 delete from tmarket;
 delete from ttradedate;
+delete from torder;
 
 SET STREAMING ON;
 
@@ -83,6 +84,78 @@ insert into tcombi (product_id, unit_id, combi_id, default_flag, combi_code, com
 insert into tcombi (product_id, unit_id, combi_id, default_flag, combi_code, combi_name) values (3, 301, 30101, 1, '30101', '产品3单元1组合1');
 insert into tcombi (product_id, unit_id, combi_id, default_flag, combi_code, combi_name) values (4, 401, 40101, 1, '40101', '产品4单元1组合1');
 insert into tcombi (product_id, unit_id, combi_id, default_flag, combi_code, combi_name) values (5, 501, 50101, 1, '50101', '产品5单元1组合1');
+
+insert into torder (product_id, unit_id, combi_id, report_serial_id, security_id, shareholder_id, invest_type, side_code)
+    values (1, 101, 10101, 101011, 60000101, 'holder11', 1, 1);
+insert into torder (product_id, unit_id, combi_id, report_serial_id, security_id, shareholder_id, invest_type, side_code)
+    values (1, 101, 10101, 101012, 10000101, 'holder11', 1, 1);
+insert into torder (product_id, unit_id, combi_id, report_serial_id, security_id, shareholder_id, invest_type, side_code)
+    values (1, 101, 10101, 101013, 60000101, 'holder11', 1, 2);
+insert into torder (product_id, unit_id, combi_id, report_serial_id, security_id, shareholder_id, invest_type, side_code)
+    values (1, 101, 10101, 101014, 10000101, 'holder11', 1, 2);
+
+insert into torder (product_id, unit_id, combi_id, report_serial_id, security_id, shareholder_id, invest_type, side_code)
+    values (1, 101, 10102, 101021, 60000101, 'holder12', 1, 1);
+insert into torder (product_id, unit_id, combi_id, report_serial_id, security_id, shareholder_id, invest_type, side_code)
+    values (1, 101, 10102, 101022, 10000101, 'holder12', 1, 1);
+insert into torder (product_id, unit_id, combi_id, report_serial_id, security_id, shareholder_id, invest_type, side_code)
+    values (1, 101, 10102, 101023, 60000101, 'holder12', 1, 2);
+insert into torder (product_id, unit_id, combi_id, report_serial_id, security_id, shareholder_id, invest_type, side_code)
+    values (1, 101, 10102, 101024, 10000101, 'holder12', 1, 2);
+
+insert into torder (product_id, unit_id, combi_id, report_serial_id, security_id, shareholder_id, invest_type, side_code)
+    values (1, 102, 10201, 102011, 60000101, 'holder13', 1, 1);
+insert into torder (product_id, unit_id, combi_id, report_serial_id, security_id, shareholder_id, invest_type, side_code)
+    values (1, 102, 10201, 102012, 10000101, 'holder13', 1, 1);
+insert into torder (product_id, unit_id, combi_id, report_serial_id, security_id, shareholder_id, invest_type, side_code)
+    values (1, 102, 10201, 102013, 60000101, 'holder13', 1, 2);
+insert into torder (product_id, unit_id, combi_id, report_serial_id, security_id, shareholder_id, invest_type, side_code)
+    values (1, 102, 10201, 102014, 10000101, 'holder13', 1, 2);
+
+insert into torder (product_id, unit_id, combi_id, report_serial_id, security_id, shareholder_id, invest_type, side_code)
+    values (1, 102, 10202, 102021, 60000101, 'holder14', 1, 1);
+insert into torder (product_id, unit_id, combi_id, report_serial_id, security_id, shareholder_id, invest_type, side_code)
+    values (1, 102, 10202, 102022, 10000101, 'holder14', 1, 1);
+insert into torder (product_id, unit_id, combi_id, report_serial_id, security_id, shareholder_id, invest_type, side_code)
+    values (1, 102, 10202, 102023, 60000101, 'holder14', 1, 2);
+insert into torder (product_id, unit_id, combi_id, report_serial_id, security_id, shareholder_id, invest_type, side_code)
+    values (1, 102, 10202, 102024, 10000101, 'holder14', 1, 2);
+
+insert into torder (product_id, unit_id, combi_id, report_serial_id, security_id, shareholder_id, invest_type, side_code)
+    values (2, 201, 20101, 201011, 60000101, 'holder2', 1, 1);
+insert into torder (product_id, unit_id, combi_id, report_serial_id, security_id, shareholder_id, invest_type, side_code)
+    values (2, 201, 20101, 201012, 10000101, 'holder2', 1, 1);
+insert into torder (product_id, unit_id, combi_id, report_serial_id, security_id, shareholder_id, invest_type, side_code)
+    values (2, 201, 20101, 201013, 60000101, 'holder2', 1, 2);
+insert into torder (product_id, unit_id, combi_id, report_serial_id, security_id, shareholder_id, invest_type, side_code)
+    values (2, 201, 20101, 201014, 10000101, 'holder2', 1, 2);
+
+insert into torder (product_id, unit_id, combi_id, report_serial_id, security_id, shareholder_id, invest_type, side_code)
+    values (3, 301, 30101, 301011, 60000101, 'holder3', 1, 1);
+insert into torder (product_id, unit_id, combi_id, report_serial_id, security_id, shareholder_id, invest_type, side_code)
+    values (3, 301, 30101, 301012, 10000101, 'holder3', 1, 1);
+insert into torder (product_id, unit_id, combi_id, report_serial_id, security_id, shareholder_id, invest_type, side_code)
+    values (3, 301, 30101, 301013, 60000101, 'holder3', 1, 2);
+insert into torder (product_id, unit_id, combi_id, report_serial_id, security_id, shareholder_id, invest_type, side_code)
+    values (3, 301, 30101, 301014, 10000101, 'holder3', 1, 2);
+
+insert into torder (product_id, unit_id, combi_id, report_serial_id, security_id, shareholder_id, invest_type, side_code)
+    values (4, 401, 40101, 401011, 60000101, 'holder4', 1, 1);
+insert into torder (product_id, unit_id, combi_id, report_serial_id, security_id, shareholder_id, invest_type, side_code)
+    values (4, 401, 40101, 401012, 10000101, 'holder4', 1, 1);
+insert into torder (product_id, unit_id, combi_id, report_serial_id, security_id, shareholder_id, invest_type, side_code)
+    values (4, 401, 40101, 401013, 60000101, 'holder4', 1, 2);
+insert into torder (product_id, unit_id, combi_id, report_serial_id, security_id, shareholder_id, invest_type, side_code)
+    values (4, 401, 40101, 401014, 10000101, 'holder4', 1, 2);
+
+insert into torder (product_id, unit_id, combi_id, report_serial_id, security_id, shareholder_id, invest_type, side_code)
+    values (5, 501, 50101, 501011, 60000101, 'holder5', 1, 1);
+insert into torder (product_id, unit_id, combi_id, report_serial_id, security_id, shareholder_id, invest_type, side_code)
+    values (5, 501, 50101, 501012, 10000101, 'holder5', 1, 1);
+insert into torder (product_id, unit_id, combi_id, report_serial_id, security_id, shareholder_id, invest_type, side_code)
+    values (5, 501, 50101, 501013, 60000101, 'holder5', 1, 2);
+insert into torder (product_id, unit_id, combi_id, report_serial_id, security_id, shareholder_id, invest_type, side_code)
+    values (5, 501, 50101, 501014, 10000101, 'holder5', 1, 2);
 
 insert into tshareholder(shareholder_id, mkt_id, shareholder_name, bind_seat, combi_id, use_product_list)
     values ('holder11', 1, 'holder11', 'seat1', 10101, ',1,');

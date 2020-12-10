@@ -17,6 +17,6 @@ public class GlobalExceptionHandler {
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public JsonResult handleBusinessError(BusinessErrorException exception){
         logger.error("系统异常：{}", exception.getMessage());
-        return new JsonResult(BusinessMsgEnum.UNEXPECTED_EXCEPTION);
+        return new JsonResult("500", "系统发生异常：" + exception.getMsg());
     }
 }
