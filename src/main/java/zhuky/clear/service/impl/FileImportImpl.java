@@ -1,7 +1,8 @@
 package zhuky.clear.service.impl;
 
+import org.apache.ignite.Ignite;
+import org.apache.ignite.IgniteCache;
 import org.apache.ignite.cache.query.SqlFieldsQuery;
-import org.apache.ignite.client.IgniteClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +27,12 @@ public class FileImportImpl implements FileImport {
     ClearContext clearContext;
 
     @Autowired
-    IgniteClient client;
+    IgniteCache igniteCache;
 
     @Override
     public void importFile(String filePath, String tableName) {
         logger.info("导入文件{}开始", filePath);
-        client.query(new SqlFieldsQuery("delete from " + tableName));
+        igniteCache.query(new SqlFieldsQuery("delete from " + tableName));
         /**
          * String copySql = "COPY FROM 'c:\\Users\\zhuky\\Desktop\\1111.csv' INTO tjsmx (\n" +
          * 					"  SCDM,....,RECORD_ID\n) FORMAT CSV\n";

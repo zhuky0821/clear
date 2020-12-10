@@ -33,6 +33,7 @@ public class IdentifyImpl implements Identify {
         List<Ttmpcurrents> tmpCurrentsList = new ArrayList<>();
 
         for (Tshareholder tshareholder : productUseShareholder) {
+            logger.info("处理股东{}", tshareholder);
             if(tshareholder.getMktId() != 1) {
                 continue;
             }

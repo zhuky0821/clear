@@ -28,13 +28,13 @@ public class BaseTableQueryMapperImpl implements BaseTableQueryMapper {
 
     @Override
     public Tsecurity getSecurity(String securityCode, int mktId) {
-        Map<String, Tsecurity> tsecurityCodeMktCache = clearContext.getTsecurityCodeMktCache();
-        Tsecurity tsecurity = tsecurityCodeMktCache.get(securityCode + "_" + mktId);
-        if(tsecurity == null){
+//        Map<String, Tsecurity> tsecurityCodeMktCache = clearContext.getTsecurityCodeMktCache();
+//        Tsecurity tsecurity = tsecurityCodeMktCache.get(securityCode + "_" + mktId);
+//        if(tsecurity == null){
             List<Tsecurity> all = ormUtil.querySingleTable("Tsecurity", "security_code = ? and mkt_id = ?", securityCode, mktId);
-            tsecurity = all.get(0);
-            tsecurityCodeMktCache.put(securityCode + "_" + mktId, tsecurity);
-        }
+        Tsecurity  tsecurity = all.get(0);
+//            tsecurityCodeMktCache.put(securityCode + "_" + mktId, tsecurity);
+//        }
         return tsecurity;
     }
 

@@ -1,7 +1,7 @@
 package zhuky.clear.util;
 
+import org.apache.ignite.Ignite;
 import org.apache.ignite.cache.query.SqlFieldsQuery;
-import org.apache.ignite.client.IgniteClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -24,12 +24,12 @@ public class CodeGeneratorUtil {
     private String tableNames;
 
     @Autowired
-    IgniteClient client;
+    Ignite ignite;
 
     public void createTableFile(){
         List<String> names = new ArrayList();
         if("all".equals(tableNames)){
-            List<List<?>> allTables = client.query(new SqlFieldsQuery("SELECT lower(table_name) FROM SYS.TABLES")).getAll();
+            List<List<?>> allTables = ignite.cache("ignite-sys-cache").query(new SqlFieldsQuery("SELECT lower(table_name) FROM SYS.TABLES")).getAll();
             for (List<?> allTable : allTables) {
                 names.add((String) allTable.get(0));
             }
@@ -56,7 +56,7 @@ public class CodeGeneratorUtil {
                 .append("import lombok.NoArgsConstructor;\r\n");
 
         SqlFieldsQuery sqlFieldsQuery = new SqlFieldsQuery("SELECT a.column_name, a.type FROM SYS.TABLE_COLUMNS a WHERE a.table_name = upper(?) AND a.TYPE NOT IS null").setArgs(tableName);
-        List<List<?>> all = client.query(sqlFieldsQuery).getAll();
+        List<List<?>> all = ignite.cache("ignite-sys-cache").query(sqlFieldsQuery).getAll();
         for (List<?> objects : all) {
             String columnName = StringUtil.underlineToCamel((String) objects.get(0));
             String type = (String) objects.get(1);

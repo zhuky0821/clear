@@ -1,12 +1,16 @@
 package zhuky.clear.config;
 
-
-import org.apache.ignite.springframework.boot.autoconfigure.IgniteClientConfigurer;
+import org.apache.ignite.Ignite;
+import org.apache.ignite.IgniteCache;
+import org.apache.ignite.IgniteCluster;
+import org.apache.ignite.configuration.IgniteConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import zhuky.clear.entity.Tsecurity;
 
 import java.sql.Connection;
@@ -26,12 +30,23 @@ import java.util.concurrent.Executors;
 public class ClearContext {
     private static final Logger logger = LoggerFactory.getLogger(ClearContext.class);
 
-    @Value("${ignite-client.addresses}")
-    private String igniteAddress;
+    //@Value("${ignite-client.addresses}")
+    private String igniteAddress = "localhost:10800";
     @Value("${clear.threadpool.size}")
     private int threadPoolSize;
 
     private ExecutorService executorService;
+
+    @Autowired
+    @Lazy
+    private Ignite ignite;
+
+    @Bean
+    @Lazy
+    IgniteCache getIgniteCache() {
+        return ignite.getOrCreateCache("clear");
+    }
+
 
     /**
      * 本地缓存池
@@ -60,10 +75,18 @@ public class ClearContext {
      * Ignite瘦客户端配置
      * @return
      */
+//    @Bean
+//    IgniteClientConfigurer configurer() {
+//        //其他配置使用yml配置
+//        return cfg -> cfg.setSendBufferSize(64*1024);
+//    }
+
     @Bean
-    IgniteClientConfigurer configurer() {
-        //其他配置使用yml配置
-        return cfg -> cfg.setSendBufferSize(64*1024);
+    public IgniteConfiguration igniteConfiguration() {
+        // If you provide a whole ClientConfiguration bean then configuration properties will not be used.
+        IgniteConfiguration cfg = new IgniteConfiguration();
+        cfg.setIgniteInstanceName("clear");
+        return cfg;
     }
 
     /**

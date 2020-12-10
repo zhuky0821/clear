@@ -1,11 +1,13 @@
 package zhuky.clear.util;
 
+import org.apache.ignite.Ignite;
+import org.apache.ignite.IgniteCache;
 import org.apache.ignite.cache.query.SqlFieldsQuery;
-import org.apache.ignite.client.IgniteClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import zhuky.clear.config.ClearContext;
 import zhuky.clear.exception.BusinessErrorException;
 
 import java.lang.reflect.Constructor;
@@ -18,9 +20,12 @@ public class ORMUtil {
     private static final Logger logger = LoggerFactory.getLogger(ORMUtil.class);
 
     @Autowired
-    private IgniteClient client;
+    private ClearContext clearContext;
+    @Autowired
+    private IgniteCache igniteCache;
 
     public <E> E convert2Object(List<?> list, String className) {
+        //logger.trace("对象转换{}", list);
         E res = null;
 
         try {
@@ -66,7 +71,7 @@ public class ORMUtil {
     public <E> List<E> queryAll(String sql, String classFullName, Object... args){
 
         List<E> res = new ArrayList<>();
-        List<List<?>> all = client.query(new SqlFieldsQuery(sql).setArgs(args)).getAll();
+        List<List<?>> all = igniteCache.query(new SqlFieldsQuery(sql).setArgs(args)).getAll();
         for (List<?> objects : all) {
             E e = convert2Object(objects, classFullName);
             res.add(e);
