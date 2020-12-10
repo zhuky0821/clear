@@ -1,6 +1,9 @@
 package zhuky.clear.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import zhuky.clear.dao.BaseTableQueryMapper;
 import zhuky.clear.dao.InterfaceTableQueryMapper;
 import zhuky.clear.entity.Ttmpcurrents;
@@ -14,8 +17,9 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class IdentifyImpl implements Identify {
-
+    private static final Logger logger = LoggerFactory.getLogger(IdentifyImpl.class);
     @Autowired
     InterfaceTableQueryMapper interfaceTableQueryMapper;
     @Autowired
@@ -23,7 +27,7 @@ public class IdentifyImpl implements Identify {
 
     @Override
     public List<Ttmpcurrents> identifyFile(int productId, int businessDate) {
-
+        logger.info("业务识别开始，产品：{}，业务日期：{}", productId, businessDate);
         List<Tshareholder> productUseShareholder = baseTableQueryMapper.getProductUseShareholder(productId);
 
         List<Ttmpcurrents> tmpCurrentsList = new ArrayList<>();

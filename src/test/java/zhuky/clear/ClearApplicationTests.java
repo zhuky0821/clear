@@ -294,6 +294,11 @@ class ClearApplicationTests {
 		}
 	}
 
+	@Test
+	void testFlow(){
+
+	}
+
 }
 
 class TestThreadPool1 implements Callable<String>{

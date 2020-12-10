@@ -2,6 +2,7 @@ package zhuky.clear.dao.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import zhuky.clear.config.ClearContext;
 import zhuky.clear.dao.BaseTableQueryMapper;
 import zhuky.clear.entity.Tfilecolumnconfig;
 import zhuky.clear.entity.Tsecurity;
@@ -9,12 +10,15 @@ import zhuky.clear.entity.Tshareholder;
 import zhuky.clear.util.ORMUtil;
 
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class BaseTableQueryMapperImpl implements BaseTableQueryMapper {
 
     @Autowired
     ORMUtil ormUtil;
+    @Autowired
+    ClearContext clearContext;
 
     @Override
     public List<Tshareholder> getProductUseShareholder(int productId) {
@@ -24,8 +28,14 @@ public class BaseTableQueryMapperImpl implements BaseTableQueryMapper {
 
     @Override
     public Tsecurity getSecurity(String securityCode, int mktId) {
-        List<Tsecurity> all = ormUtil.querySingleTable("Tsecurity", "security_code = ? and mkt_id = ?", securityCode, mktId);
-        return all.get(0);
+        Map<String, Tsecurity> tsecurityCodeMktCache = clearContext.getTsecurityCodeMktCache();
+        Tsecurity tsecurity = tsecurityCodeMktCache.get(securityCode + "_" + mktId);
+        if(tsecurity == null){
+            List<Tsecurity> all = ormUtil.querySingleTable("Tsecurity", "security_code = ? and mkt_id = ?", securityCode, mktId);
+            tsecurity = all.get(0);
+            tsecurityCodeMktCache.put(securityCode + "_" + mktId, tsecurity);
+        }
+        return tsecurity;
     }
 
     @Override

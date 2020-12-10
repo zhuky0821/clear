@@ -7,10 +7,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import zhuky.clear.entity.Tsecurity;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -29,6 +32,18 @@ public class ClearContext {
     private int threadPoolSize;
 
     private ExecutorService executorService;
+
+    /**
+     * 本地缓存池
+     */
+    private Map<String, Tsecurity> tsecurityCodeMktCache;
+
+    public Map<String, Tsecurity> getTsecurityCodeMktCache() {
+        if(tsecurityCodeMktCache == null){
+            tsecurityCodeMktCache = new HashMap<>();
+        }
+        return tsecurityCodeMktCache;
+    }
 
     /**
      * 获取线程池
