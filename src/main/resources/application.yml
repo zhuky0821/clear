@@ -1,7 +1,7 @@
-ignite-client:
-  addresses: localhost:10800 # this is mandatory property!
-  timeout: 10000
-  tcpNoDelay: false
+#ignite-client:
+#  addresses: localhost:10800 # this is mandatory property!
+#  timeout: 10000
+#  tcpNoDelay: false
 
 #spring:
 #  datasource:
