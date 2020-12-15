@@ -3,6 +3,7 @@ package zhuky.clear.config;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
 import org.apache.ignite.IgniteCluster;
+import org.apache.ignite.configuration.DataStorageConfiguration;
 import org.apache.ignite.configuration.IgniteConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,20 +45,11 @@ public class ClearContext {
     @Bean
     @Lazy
     IgniteCache getIgniteCache() {
-        return ignite.getOrCreateCache("clear");
-    }
-
-
-    /**
-     * 本地缓存池
-     */
-    private Map<String, Tsecurity> tsecurityCodeMktCache;
-
-    public Map<String, Tsecurity> getTsecurityCodeMktCache() {
-        if(tsecurityCodeMktCache == null){
-            tsecurityCodeMktCache = new HashMap<>();
+        if(!ignite.cluster().active()){
+            //开启原生持久化之后，借点默认是关闭的，要手工开启
+            ignite.cluster().active(true);
         }
-        return tsecurityCodeMktCache;
+        return ignite.getOrCreateCache("clear");
     }
 
     /**
@@ -86,6 +78,10 @@ public class ClearContext {
         // If you provide a whole ClientConfiguration bean then configuration properties will not be used.
         IgniteConfiguration cfg = new IgniteConfiguration();
         cfg.setIgniteInstanceName("clear");
+        //开启原生持久化
+        DataStorageConfiguration dataStorageConfiguration = new DataStorageConfiguration();
+        dataStorageConfiguration.getDefaultDataRegionConfiguration().setPersistenceEnabled(true);
+        cfg.setDataStorageConfiguration(dataStorageConfiguration);
         return cfg;
     }
 
