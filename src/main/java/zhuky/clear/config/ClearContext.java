@@ -32,6 +32,8 @@ public class ClearContext {
     private String igniteAddress = "localhost:10800";
     @Value("${clear.threadpool.size}")
     private int threadPoolSize;
+    @Value("${clear.ignite.persistence}")
+    private boolean persistence;
 
     private ExecutorService executorService;
 
@@ -42,7 +44,7 @@ public class ClearContext {
     @Bean
     @Lazy
     IgniteCache getIgniteCache() {
-        if(!ignite.cluster().active()){
+        if(!ignite.cluster().active() && persistence){
             //开启原生持久化之后，借点默认是关闭的，要手工开启
             ignite.cluster().active(true);
         }
@@ -75,10 +77,12 @@ public class ClearContext {
         // If you provide a whole ClientConfiguration bean then configuration properties will not be used.
         IgniteConfiguration cfg = new IgniteConfiguration();
         cfg.setIgniteInstanceName("clear");
-        //开启原生持久化
-        DataStorageConfiguration dataStorageConfiguration = new DataStorageConfiguration();
-        dataStorageConfiguration.getDefaultDataRegionConfiguration().setPersistenceEnabled(true);
-        cfg.setDataStorageConfiguration(dataStorageConfiguration);
+        if(persistence){
+            //开启原生持久化
+            DataStorageConfiguration dataStorageConfiguration = new DataStorageConfiguration();
+            dataStorageConfiguration.getDefaultDataRegionConfiguration().setPersistenceEnabled(true);
+            cfg.setDataStorageConfiguration(dataStorageConfiguration);
+        }
         return cfg;
     }
 
