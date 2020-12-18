@@ -27,7 +27,10 @@ public class FlowController {
     @Autowired
     private ClearContext clearContext;
 
-
+    @PostMapping(path = "/exec")
+    public void exec(@RequestBody Tflowtask tflowtask){
+        logger.info(tflowtask.toString());
+    }
 
     @ApiOperation(value = "文件導入")
     @RequestMapping("/import")
@@ -45,7 +48,7 @@ public class FlowController {
         logger.info("待入賬流水生成开始");
         ExecutorService executorService = clearContext.getExecutorService();
         List<ClearFlow> tasks = new ArrayList<>();
-        for(int i=1; i<3; i++){
+        for(int i=1; i<6; i++){
             Tflowtask tflowtask = new Tflowtask();
             tflowtask.setProductId(i);
             tflowtask.setBusinessDate(20201210);
