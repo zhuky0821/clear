@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import zhuky.clear.dao.BaseTableQueryMapper;
+import zhuky.clear.dao.CommonQueryMapper;
 import zhuky.clear.entity.Tbond;
 import zhuky.clear.entity.Tproduct;
 import zhuky.clear.entity.Tsecurity;
@@ -77,6 +78,17 @@ public class QueryTest {
         //baseTableQueryMapper.getFileColumnConfigs("tjsmx");
 
         logger.info("测试ORM性能结束");
+    }
+
+    @Autowired
+    CommonQueryMapper commonQueryMapper;
+
+    @Test
+    void testCommonQuery(){
+        List<List<?>> lists = commonQueryMapper.commonQuery("select * from tproduct");
+        for (List<?> list : lists) {
+            System.out.println(list);
+        }
     }
 
 }
