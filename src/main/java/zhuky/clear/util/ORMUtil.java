@@ -57,7 +57,7 @@ public class ORMUtil {
         return sql.toString();
     }
 
-    public <E> List<E> queryAll(String sql, Class<E> clazz, Object... args){
+    public <E> List<E> queryAll(Class<E> clazz, String sql, Object... args){
 
         List<E> res = new ArrayList<>();
         List<List<?>> all = igniteCache.query(new SqlFieldsQuery(sql).setArgs(args)).getAll();
@@ -76,7 +76,7 @@ public class ORMUtil {
         }
         String sql = sqlBulider.toString();
         logger.trace("执行单表查询sql：{}", sql);
-        return queryAll(sql, clazz, args);
+        return queryAll(clazz, sql, args);
     }
 
 

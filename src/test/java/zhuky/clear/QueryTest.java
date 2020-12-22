@@ -44,7 +44,7 @@ public class QueryTest {
     void testOrm2(){
         Class clazz = Tshareholder.class;
         String sql = ormUtil.getSql(clazz);
-        List<Object> objects = ormUtil.queryAll("select " + sql + " from tshareholder", clazz);
+        List<Object> objects = ormUtil.queryAll(clazz,"select " + sql + " from tshareholder");
         for (Object object : objects) {
             System.out.println(object);
         }
