@@ -1,7 +1,8 @@
 package zhuky.clear;
 
+import org.apache.ignite.Ignite;
+import org.apache.ignite.IgniteCache;
 import org.apache.ignite.cache.query.SqlFieldsQuery;
-import org.apache.ignite.client.IgniteClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,7 +27,7 @@ public class CodeGeneratorTool {
     }
 
     @Autowired
-    IgniteClient client;
+    IgniteCache ignite;
     /*
     copy命令：
     insert into thisjsmx (SCDM, JLLX, JYFS, JSFS, YWLX, QSBZ, GHLX, JSBH, CJBH, SQBH, WTBH, JYRQ, QSRQ, JSRQ, QTRQ, WTSJ, CJSJ, XWH1, XWH2, XWHY, JSHY, TGHY, ZQZH, ZQDM1, ZQDM2, ZQLB, LTLX, QYLB, GPNF, MMBZ, SL, CJSL, ZJZH, BZ, JG1, JG2, QSJE, YHS, JSF, GHF, ZGF, SXF, QTJE1, QTJE2, QTJE3, SJSF, JGDM, FJSM)
@@ -43,7 +44,7 @@ public class CodeGeneratorTool {
         //每个股东，5000条买入，5000条卖出，2000条回购,成交编号为 i + 组合序号 * 100000,申请编号为 组合序号*10 + （1|2）
         //买入价格21，卖出价格22，买入200股，卖出100股，印花税 2 经手费 1 过户费 1 证管费 1 证券代码100001 和 600001循环买卖
 
-        List<List<?>> all = client.query(new SqlFieldsQuery("SELECT SHAREHOLDER_ID, BIND_SEAT, COMBI_ID FROM tshareholder order by combi_id")).getAll();
+        List<List<?>> all = ignite.query(new SqlFieldsQuery("SELECT SHAREHOLDER_ID, BIND_SEAT, COMBI_ID FROM tshareholder order by combi_id")).getAll();
         List<JsmxTemplate> jsmxTemplates = new ArrayList<>();
         int recordId = 0;
         for (List<?> shareholder : all) {
