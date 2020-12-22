@@ -33,14 +33,21 @@ public class FileImportImpl implements FileImport {
     public void importFile(String filePath, String tableName) {
         logger.info("导入文件{}开始", filePath);
         igniteCache.query(new SqlFieldsQuery("delete from " + tableName));
+        logger.info("删除表{}数据成功", tableName);
         /**
          * String copySql = "COPY FROM 'c:\\Users\\zhuky\\Desktop\\1111.csv' INTO tjsmx (\n" +
          * 					"  SCDM,....,RECORD_ID\n) FORMAT CSV\n";
          */
         String classFullName = "zhuky.clear.entity." + StringUtil.toUpperCaseFirstOne(tableName);
+        Class clazz = null;
+        try {
+            clazz = Class.forName(classFullName);
+        } catch (ClassNotFoundException e) {
+            throw new BusinessErrorException("-1", e.getMessage());
+        }
         StringBuilder copySql = new StringBuilder();
         copySql.append("COPY FROM \'").append(filePath).append("\' INTO ").append(tableName).append(" (")
-                .append(ormUtil.getSql(classFullName)).append(") FORMAT CSV");
+                .append(ormUtil.getSql(clazz)).append(") FORMAT CSV");
         logger.info("导入语句：{}", copySql.toString());
         Connection connection = null;
         Statement statement = null;

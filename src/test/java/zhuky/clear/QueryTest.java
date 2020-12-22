@@ -39,69 +39,12 @@ public class QueryTest {
     }
 
     @Autowired
-    IgniteClient client;
-
-    @Test
-    void createJsmxColumn(){
-        SqlFieldsQuery sqlFieldsQuery = new SqlFieldsQuery("SELECT a.column_name FROM SYS.TABLE_COLUMNS a WHERE a.table_name = ? AND a.TYPE NOT IS null").setArgs("TJSMX");
-        List<List<?>> all = client.query(sqlFieldsQuery).getAll();
-        for (List<?> objects : all) {
-            for (Object object : objects) {
-                System.out.print(object);
-                System.out.print(",");
-            }
-        }
-
-    }
-
-    @Test
-    void testORM(){
-        Class clazz = Tbond.class;
-        Constructor[] constructors = clazz.getConstructors();
-        Constructor constructor1 = null;
-        Field[] declaredFields = clazz.getDeclaredFields();
-        for (Field declaredField : declaredFields) {
-            System.out.println(StringUtil.camelToUnderline(declaredField.getName(), 1));
-        }
-        Class[] parameterTypes = null;
-
-        for (Constructor constructor : constructors) {
-            if(constructor.getParameterCount() != declaredFields.length){
-                System.out.println("不是全参构造函数略过");
-                continue;
-            }
-            constructor1 = constructor;
-            break;
-        }
-
-        SqlFieldsQuery sqlFieldsQuery = new SqlFieldsQuery("SELECT security_id, bond_interest from tbond");
-        List<List<?>> all = client.query(sqlFieldsQuery).getAll();
-        for (List<?> objects : all) {
-            Object[] objects1 = objects.toArray();
-
-            try {
-                Object o = constructor1.newInstance(objects1);
-                Tbond tbond = (Tbond) o;
-                System.out.println(tbond);
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-    }
-
-    @Autowired
     ORMUtil ormUtil;
     @Test
     void testOrm2(){
-        String className = "zhuky.clear.entity.Tshareholder";
-        String sql = ormUtil.getSql(className);
-        List<Object> objects = ormUtil.queryAll("select " + sql + " from tshareholder", className);
+        Class clazz = Tshareholder.class;
+        String sql = ormUtil.getSql(clazz);
+        List<Object> objects = ormUtil.queryAll("select " + sql + " from tshareholder", clazz);
         for (Object object : objects) {
             System.out.println(object);
         }
@@ -110,45 +53,12 @@ public class QueryTest {
 
     @Test
     void testOrm3(){
-        List<Tproduct> tshareholder = ormUtil.querySingleTable("Tproduct", "product_id = ?", 1);
+        List<Tproduct> tshareholder = ormUtil.querySingleTable(Tproduct.class, "product_id = ?", 1);
         for (Object o : tshareholder) {
             System.out.println(o);
         }
     }
 
-    @Test
-    void  testOrm4(){
-        Class clazz = Tbond.class;
-        try {
-            SqlFieldsQuery sqlFieldsQuery = new SqlFieldsQuery("SELECT security_id, bond_interest from tbond");
-            List<List<?>> all = client.query(sqlFieldsQuery).getAll();
-
-            Constructor constructor = clazz.getConstructor();
-
-            List<Object> os = new ArrayList<>();
-            Field[] declaredFields = clazz.getDeclaredFields();
-            for (List<?> objects : all) {
-                Object o = constructor.newInstance();
-                for(int i=0; i<declaredFields.length; i++){
-                    Field declaredField = declaredFields[i];
-                    declaredField.setAccessible(true);
-                    declaredField.set(o, objects.get(i));
-                }
-                os.add(o);
-            }
-
-            System.out.println(os);
-
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * 100000次查询大概耗时114s

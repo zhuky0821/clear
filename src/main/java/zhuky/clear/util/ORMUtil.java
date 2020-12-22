@@ -24,16 +24,13 @@ public class ORMUtil {
     @Autowired
     private IgniteCache igniteCache;
 
-    public <E> E convert2Object(List<?> list, String className) {
+    public <E> E convert2Object(List<?> list, Class<E> clazz) {
         //logger.trace("对象转换{}", list);
         E res = null;
 
         try {
-            Class clazz = Class.forName(className);
             Field[] declaredFields = clazz.getDeclaredFields();
-            Constructor constructor = clazz.getConstructor();
-
-            res = (E) constructor.newInstance();
+            res = clazz.newInstance();
             for(int i=0; i<declaredFields.length; i++){
                 Field field = declaredFields[i];
                 field.setAccessible(true);
@@ -48,47 +45,39 @@ public class ORMUtil {
     }
 
 
-    public String getSql(String classFullName){
+    public String getSql(Class clazz){
         StringBuilder sql = new StringBuilder();
-        try {
-            Class clazz = Class.forName(classFullName);
-
-            Field[] declaredFields = clazz.getDeclaredFields();
-            for(int i=0; i<declaredFields.length; i++){
-                sql.append(StringUtil.camelToUnderline(declaredFields[i].getName(), 1));
-                if(i < declaredFields.length -1){
-                    sql.append(",");
-                }
+        Field[] declaredFields = clazz.getDeclaredFields();
+        for(int i=0; i<declaredFields.length; i++){
+            sql.append(StringUtil.camelToUnderline(declaredFields[i].getName(), 1));
+            if(i < declaredFields.length -1){
+                sql.append(",");
             }
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
-
         return sql.toString();
     }
 
-    public <E> List<E> queryAll(String sql, String classFullName, Object... args){
+    public <E> List<E> queryAll(String sql, Class<E> clazz, Object... args){
 
         List<E> res = new ArrayList<>();
         List<List<?>> all = igniteCache.query(new SqlFieldsQuery(sql).setArgs(args)).getAll();
         for (List<?> objects : all) {
-            E e = convert2Object(objects, classFullName);
+            E e = convert2Object(objects, clazz);
             res.add(e);
         }
         return res;
     }
 
-
-    public <E> List<E> querySingleTable(String className, String condition, Object... args){
-        String classFullName = "zhuky.clear.entity." + className;
+    public <E> List<E> querySingleTable(Class<E> clazz, String condition, Object... args){
         StringBuilder sqlBulider = new StringBuilder();
-        sqlBulider.append("select ").append(getSql(classFullName)).append(" from ").append(className);
+        sqlBulider.append("select ").append(getSql(clazz)).append(" from ").append(clazz.getSimpleName());
         if(condition != null && condition.trim().length() > 0){
             sqlBulider.append(" where ").append(condition);
         }
         String sql = sqlBulider.toString();
         logger.trace("执行单表查询sql：{}", sql);
-        return queryAll(sql, classFullName, args);
+        return queryAll(sql, clazz, args);
     }
+
+
 }

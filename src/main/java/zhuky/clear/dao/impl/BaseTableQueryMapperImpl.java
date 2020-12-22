@@ -22,31 +22,26 @@ public class BaseTableQueryMapperImpl implements BaseTableQueryMapper {
 
     @Override
     public List<Tshareholder> getProductUseShareholder(int productId) {
-        List<Tshareholder> all = ormUtil.querySingleTable("Tshareholder", "instr(','||USE_PRODUCT_LIST||',', ','|| ? ||',')", productId);
+        List<Tshareholder> all = ormUtil.querySingleTable(Tshareholder.class, "instr(','||USE_PRODUCT_LIST||',', ','|| ? ||',')", productId);
         return all;
     }
 
     @Override
     public Tsecurity getSecurity(String securityCode, int mktId) {
-//        Map<String, Tsecurity> tsecurityCodeMktCache = clearContext.getTsecurityCodeMktCache();
-//        Tsecurity tsecurity = tsecurityCodeMktCache.get(securityCode + "_" + mktId);
-//        if(tsecurity == null){
-            List<Tsecurity> all = ormUtil.querySingleTable("Tsecurity", "security_code = ? and mkt_id = ?", securityCode, mktId);
+        List<Tsecurity> all = ormUtil.querySingleTable(Tsecurity.class, "security_code = ? and mkt_id = ?", securityCode, mktId);
         Tsecurity  tsecurity = all.get(0);
-//            tsecurityCodeMktCache.put(securityCode + "_" + mktId, tsecurity);
-//        }
         return tsecurity;
     }
 
     @Override
     public Tsecurity getSecurityById(int securityId) {
-        List<Tsecurity> all = ormUtil.querySingleTable("Tsecurity", "security_id = ?", securityId);
+        List<Tsecurity> all = ormUtil.querySingleTable(Tsecurity.class, "security_id = ?", securityId);
         return all.get(0);
     }
 
     @Override
     public List<Tfilecolumnconfig> getFileColumnConfigs(String tableName) {
-        List<Tfilecolumnconfig> all = ormUtil.querySingleTable("TFileColumnConfig", "table_name = ? order by begin_pos", tableName);
+        List<Tfilecolumnconfig> all = ormUtil.querySingleTable(Tfilecolumnconfig.class, "table_name = ? order by begin_pos", tableName);
         return all;
     }
 }
