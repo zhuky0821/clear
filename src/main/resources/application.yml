@@ -41,4 +41,4 @@ clear:
   threadpool:
     size: 10
   ignite:
-    persistence: true
+    persistence: false

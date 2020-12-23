@@ -76,6 +76,7 @@ public class ClearContext {
         // If you provide a whole ClientConfiguration bean then configuration properties will not be used.
         IgniteConfiguration cfg = new IgniteConfiguration();
         cfg.setIgniteInstanceName("clear");
+        //开启持久化之后对性能影响很大
         if(persistence){
             //开启原生持久化
             DataStorageConfiguration dataStorageConfiguration = new DataStorageConfiguration();
