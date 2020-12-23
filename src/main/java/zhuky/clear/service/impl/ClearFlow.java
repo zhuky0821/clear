@@ -26,7 +26,6 @@ public class ClearFlow implements Callable<Map<Integer, String>> {
         this.tflowtask = tflowtask;
         this.identify = SpringContextUtil.getBean(Identify.class);
         this.fileImport = SpringContextUtil.getBean(FileImport.class);
-//        this.clearContext = SpringContextUtil.getBean(ClearContext.class);
     }
 
 

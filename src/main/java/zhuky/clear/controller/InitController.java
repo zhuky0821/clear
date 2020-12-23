@@ -32,4 +32,11 @@ public class InitController {
     public void dataInitial() {
         initService.initData();
     }
+
+    @GetMapping("/sys")
+    @ApiOperation(value = "系统启动后初始化系统内存数据")
+    public void sysInit(){
+        initService.initSchema();
+        initService.initData();
+    }
 }
