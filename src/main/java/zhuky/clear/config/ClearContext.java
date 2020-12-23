@@ -2,8 +2,10 @@ package zhuky.clear.config;
 
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
+import org.apache.ignite.IgniteSystemProperties;
 import org.apache.ignite.configuration.DataStorageConfiguration;
 import org.apache.ignite.configuration.IgniteConfiguration;
+import org.apache.ignite.configuration.WALMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +80,7 @@ public class ClearContext {
             //开启原生持久化
             DataStorageConfiguration dataStorageConfiguration = new DataStorageConfiguration();
             dataStorageConfiguration.getDefaultDataRegionConfiguration().setPersistenceEnabled(true);
+            dataStorageConfiguration.setWalMode(WALMode.BACKGROUND);
             cfg.setDataStorageConfiguration(dataStorageConfiguration);
         }
         return cfg;
