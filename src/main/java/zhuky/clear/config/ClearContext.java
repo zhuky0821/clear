@@ -34,8 +34,6 @@ public class ClearContext {
     @Value("${clear.ignite.persistence}")
     private boolean persistence;
 
-    private ExecutorService executorService;
-
     @Autowired
     @Lazy
     private Ignite ignite;
@@ -54,11 +52,10 @@ public class ClearContext {
      * 获取线程池
      * @return 定长线程池
      */
-    public ExecutorService getExecutorService() {
-        if(executorService == null){
-            executorService = Executors.newFixedThreadPool(threadPoolSize);
-        }
-        return executorService;
+    @Bean
+    @Lazy
+    ExecutorService getExecutorService() {
+        return Executors.newFixedThreadPool(threadPoolSize);
     }
 
     /**

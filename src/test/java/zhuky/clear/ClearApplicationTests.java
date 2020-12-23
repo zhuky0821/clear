@@ -196,9 +196,11 @@ class ClearApplicationTests {
 
 	}
 
+	@Autowired
+	ExecutorService executorService;
+
 	@Test
 	void testThreadPool(){
-		ExecutorService executorService = clearContext.getExecutorService();
 		List<Future<String>> futures = new ArrayList<>();
 //		for (int i = 0; i < 15; i++) {
 //			TestThreadPool1 pool1 = new TestThreadPool1();

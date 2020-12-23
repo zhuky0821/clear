@@ -25,7 +25,7 @@ public class FlowController {
     Logger logger = LoggerFactory.getLogger(FlowController.class);
 
     @Autowired
-    private ClearContext clearContext;
+    private ExecutorService executorService;
 
     @PostMapping(path = "/exec")
     public void exec(@RequestBody Tflowtask tflowtask){
@@ -46,7 +46,6 @@ public class FlowController {
     @RequestMapping("/create")
     public void create(){
         logger.info("待入賬流水生成开始");
-        ExecutorService executorService = clearContext.getExecutorService();
         List<ClearFlow> tasks = new ArrayList<>();
         for(int i=1; i<6; i++){
             Tflowtask tflowtask = new Tflowtask();
