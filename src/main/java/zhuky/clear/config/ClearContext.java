@@ -83,6 +83,7 @@ public class ClearContext {
             dataStorageConfiguration.setWalMode(WALMode.BACKGROUND);
             cfg.setDataStorageConfiguration(dataStorageConfiguration);
         }
+        cfg.setPeerClassLoadingEnabled(false);
         return cfg;
     }
 
