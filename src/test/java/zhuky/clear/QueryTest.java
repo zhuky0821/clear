@@ -7,16 +7,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.ClassPathResource;
 import zhuky.clear.dao.BaseTableQueryMapper;
 import zhuky.clear.dao.CommonQueryMapper;
 import zhuky.clear.entity.Tbond;
 import zhuky.clear.entity.Tproduct;
 import zhuky.clear.entity.Tsecurity;
 import zhuky.clear.entity.Tshareholder;
+import zhuky.clear.util.FileUtil;
 import zhuky.clear.util.ORMUtil;
 import zhuky.clear.util.StringUtil;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -89,6 +92,14 @@ public class QueryTest {
         for (List<?> list : lists) {
             System.out.println(list);
         }
+    }
+
+    @Autowired
+    FileUtil fileUtil;
+    @Test
+    void testFile(){
+        List<File> allFiles = fileUtil.getAllFiles("db");
+        System.out.println(allFiles);
     }
 
 }

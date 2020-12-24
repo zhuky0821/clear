@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 import zhuky.clear.exception.BusinessErrorException;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class FileUtil {
@@ -59,6 +61,50 @@ public class FileUtil {
      */
     public static String getProjectPath(){
         return System.getProperty("user.dir");
+    }
+
+
+    public List<File> getAllFiles(String path){
+        ClassPathResource resource = new ClassPathResource(path);
+        List<File> files = new ArrayList<>();
+        try {
+            File file = resource.getFile();
+            if(file.isDirectory()){
+                folderMethod(file, files);
+            }else {
+                files.add(file);
+            }
+        } catch (IOException e) {
+            logger.error("获取文件列表出错，{}", e.getMessage());
+            throw new BusinessErrorException("-1", "获取文件列表出错，"+e.getMessage());
+        }
+        return files;
+    }
+
+    public void folderMethod(File file, List<File> files){
+        if (file.exists()) {
+            File[] listFiles = file.listFiles();
+            if (null != files) {
+                for (File file2 : listFiles) {
+                    if (file2.isDirectory()) {
+                        folderMethod(file2, files);
+                    } else {
+                        files.add(file2);
+                    }
+                }
+            }
+        }
+    }
+
+    public File getSqlFile(String name){
+        List<File> allFiles = getAllFiles("db/schema");
+        File file = null;
+        for (File file1 : allFiles) {
+            if(file1.getName().endsWith(name + ".sql")){
+                file = file1;
+            }
+        }
+        return file;
     }
 
 }

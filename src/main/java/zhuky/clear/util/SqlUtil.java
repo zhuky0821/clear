@@ -1,6 +1,5 @@
 package zhuky.clear.util;
 
-import org.apache.ignite.client.ClientException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,7 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 @Component
 public class SqlUtil {
@@ -24,11 +24,18 @@ public class SqlUtil {
     ClearContext clearContext;
 
     public void execSqlFile(String path){
+        List<File> allFiles = fileUtil.getAllFiles(path);
+        for (File file : allFiles) {
+            execSingleSqlFile(file);
+        }
+    }
+
+    public void execSingleSqlFile(File file){
+
         Connection connection = null;
         Statement statement = null;
         try {
-            logger.debug("读取脚本文件内容开始");
-            File file = FileUtil.getClassPathFile(path);
+            logger.debug("读取脚本文件{}内容开始", file.getName());
             String fileSql = fileUtil.readFileByLines(file);
             logger.debug("脚本文件内容：{}",  fileSql);
 
@@ -58,5 +65,12 @@ public class SqlUtil {
         }
     }
 
+
+    public void truncateTable(String name){
+        logger.debug("begin truncate table {}", name);
+        File file = fileUtil.getSqlFile(name);
+        execSingleSqlFile(file);
+        logger.debug("end truncate table {}", name);
+    }
 
 }
