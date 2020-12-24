@@ -1,28 +1,21 @@
 package zhuky.clear;
 
-import org.apache.ignite.cache.query.SqlFieldsQuery;
-import org.apache.ignite.client.IgniteClient;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.io.ClassPathResource;
 import zhuky.clear.dao.BaseTableQueryMapper;
-import zhuky.clear.dao.CommonQueryMapper;
-import zhuky.clear.entity.Tbond;
+import zhuky.clear.dao.CommonDbMapper;
+import zhuky.clear.dao.impl.CommonDbMapperImpl;
 import zhuky.clear.entity.Tproduct;
+import zhuky.clear.entity.Treporatio;
 import zhuky.clear.entity.Tsecurity;
 import zhuky.clear.entity.Tshareholder;
 import zhuky.clear.util.FileUtil;
 import zhuky.clear.util.ORMUtil;
-import zhuky.clear.util.StringUtil;
 
 import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,7 +77,7 @@ public class QueryTest {
     }
 
     @Autowired
-    CommonQueryMapper commonQueryMapper;
+    CommonDbMapper commonQueryMapper;
 
     @Test
     void testCommonQuery(){
@@ -102,4 +95,15 @@ public class QueryTest {
         System.out.println(allFiles);
     }
 
+    @Test
+    void testInsert(){
+        Treporatio treporatio = new Treporatio();
+        treporatio.setSecurityId(1);
+        treporatio.setRepoParamType(2);
+        treporatio.setRepoParamValue(3);
+        List<Treporatio> treporatios = new ArrayList<>();
+        treporatios.add(treporatio);
+        CommonDbMapperImpl dbMapper = new CommonDbMapperImpl();
+        dbMapper.getAllSql(treporatios);
+    }
 }
