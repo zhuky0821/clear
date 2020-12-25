@@ -8,11 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Tflowtask {
-    private int taskId;
     private int flowId;
     private int productId;
     private int businessDate;
-    private int nextBusinessDate;
-    private int taskStatus;
-    private String remark;
 }

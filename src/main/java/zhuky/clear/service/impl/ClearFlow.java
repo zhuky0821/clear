@@ -37,18 +37,13 @@ public class ClearFlow implements Callable<Map<Integer, String>> {
         logger.info("执行流程任务{}开始", tflowtask);
         Map<Integer, String> result = new HashMap<>();
 
-        if(tflowtask.getFlowId() == 1){
-            //文件導入
-            fileImport.importFile("d:\\jsmx.csv", "tjsmx");
-            logger.info("文件導入成功");
-        }else {
+        if(tflowtask.getFlowId() == 2){
             List<Ttmpcurrents> ttmpcurrents = identify.identifyFile(tflowtask.getProductId(), tflowtask.getBusinessDate());
 
             logger.info("待入账流水条数{}", ttmpcurrents.size());
 
             commonDbMapper.insertBatch(ttmpcurrents);
 
-            logger.info("插入 结束");
         }
 
         result.put(tflowtask.getProductId(), "");
