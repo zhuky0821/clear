@@ -12,12 +12,14 @@ import zhuky.clear.entity.Tproduct;
 import zhuky.clear.entity.Treporatio;
 import zhuky.clear.entity.Tsecurity;
 import zhuky.clear.entity.Tshareholder;
+import zhuky.clear.service.FileImport;
 import zhuky.clear.util.FileUtil;
 import zhuky.clear.util.ORMUtil;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 @SpringBootTest
 public class QueryTest {
@@ -104,5 +106,12 @@ public class QueryTest {
         List<Treporatio> treporatios = new ArrayList<>();
         treporatios.add(treporatio);
         CommonDbMapperImpl dbMapper = new CommonDbMapperImpl();
+    }
+
+    @Autowired
+    ExecutorService executorService;
+    @Test
+    public void testPC(){
+
     }
 }

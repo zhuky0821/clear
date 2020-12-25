@@ -13,17 +13,19 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import zhuky.clear.service.impl.FileImportImpl;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 清算中心上下文
  * 1.提供线程池
  * 2.提供获取数据库连接方法
+ * 3.提供异步插入内存方法
  */
 @Configuration
 public class ClearContext {
@@ -112,5 +114,23 @@ public class ClearContext {
         return connection;
     }
 
+    private static final int MAX_CAPACITY = 10000; //阻塞队列容量
+    private static BlockingQueue<Object> blockingQueue= new ArrayBlockingQueue<>(MAX_CAPACITY); //阻塞队列
+    private  volatile boolean FLAG = false;
 
+    public BlockingQueue<Object> getBlockingQueue() {
+        return blockingQueue;
+    }
+
+    public void setBlockingQueue(BlockingQueue<Object> blockingQueue) {
+        this.blockingQueue = blockingQueue;
+    }
+
+    public boolean getFLAG() {
+        return FLAG;
+    }
+
+    public void setFLAG(boolean FLAG) {
+        this.FLAG = FLAG;
+    }
 }
