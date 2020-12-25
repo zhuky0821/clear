@@ -104,6 +104,5 @@ public class QueryTest {
         List<Treporatio> treporatios = new ArrayList<>();
         treporatios.add(treporatio);
         CommonDbMapperImpl dbMapper = new CommonDbMapperImpl();
-        dbMapper.getAllSql(treporatios);
     }
 }

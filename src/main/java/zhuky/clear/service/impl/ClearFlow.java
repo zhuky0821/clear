@@ -3,6 +3,7 @@ package zhuky.clear.service.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import zhuky.clear.dao.CommonDbMapper;
 import zhuky.clear.entity.Tflowtask;
 import zhuky.clear.entity.Ttmpcurrents;
 import zhuky.clear.service.FileImport;
@@ -21,11 +22,13 @@ public class ClearFlow implements Callable<Map<Integer, String>> {
 
     private FileImport fileImport;
     private Identify identify;
+    CommonDbMapper commonDbMapper;
 
     public ClearFlow(Tflowtask tflowtask) {
         this.tflowtask = tflowtask;
         this.identify = SpringContextUtil.getBean(Identify.class);
         this.fileImport = SpringContextUtil.getBean(FileImport.class);
+        this.commonDbMapper = SpringContextUtil.getBean(CommonDbMapper.class);
     }
 
 
@@ -42,6 +45,10 @@ public class ClearFlow implements Callable<Map<Integer, String>> {
             List<Ttmpcurrents> ttmpcurrents = identify.identifyFile(tflowtask.getProductId(), tflowtask.getBusinessDate());
 
             logger.info("待入账流水条数{}", ttmpcurrents.size());
+
+            commonDbMapper.insertBatch(ttmpcurrents);
+
+            logger.info("插入 结束");
         }
 
         result.put(tflowtask.getProductId(), "");

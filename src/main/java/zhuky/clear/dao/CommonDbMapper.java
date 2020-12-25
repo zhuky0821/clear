@@ -7,6 +7,8 @@ public interface CommonDbMapper {
 
     void update(String sql, Object... args);
 
+    void insert(Object data, String insertSql);
+
     void insert(Object data);
 
     void insertBatch(List<?> data);
