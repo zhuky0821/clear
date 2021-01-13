@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import zhuky.clear.dao.BaseTableQueryMapper;
-import zhuky.clear.dao.CommonDbMapper;
 import zhuky.clear.entity.Tsecurity;
 
 @RestController

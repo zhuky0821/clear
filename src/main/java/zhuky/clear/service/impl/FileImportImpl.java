@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import zhuky.clear.config.ClearContext;
 import zhuky.clear.exception.BusinessErrorException;
 import zhuky.clear.service.FileImport;
-import zhuky.clear.util.DataImportUtil;
 import zhuky.clear.util.ORMUtil;
 import zhuky.clear.util.SqlUtil;
 import zhuky.clear.util.StringUtil;
@@ -16,10 +15,6 @@ import zhuky.clear.util.StringUtil;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class FileImportImpl implements FileImport {
@@ -35,9 +30,6 @@ public class FileImportImpl implements FileImport {
 
     @Autowired
     SqlUtil sqlUtil;
-
-    @Autowired
-    DataImportUtil dataImportUtil;
 
     @Override
     public void importFile(String filePath, String tableName) {
@@ -86,10 +78,6 @@ public class FileImportImpl implements FileImport {
             }
         }
         logger.info("导入文件{}结束", filePath);
-
-        for (int i = 0; i < 5; i++) {
-            new Thread(dataImportUtil).start();
-        }
     }
 
 

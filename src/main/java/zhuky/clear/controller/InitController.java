@@ -2,16 +2,15 @@ package zhuky.clear.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.ignite.IgniteCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import zhuky.clear.config.ClearContext;
 import zhuky.clear.exception.JsonResult;
 import zhuky.clear.service.InitService;
+import zhuky.clear.util.DataImportUtil;
 
 @RestController
 @RequestMapping("/init")
@@ -41,6 +40,11 @@ public class InitController {
     public JsonResult sysInit(){
         initService.initSchema();
         initService.initData();
+
+//        for (int i = 0; i < 5; i++) {
+//            new Thread(new DataImportUtil()).start();
+//        }
+
         return new JsonResult("0", "系统初始化成功！");
     }
 }

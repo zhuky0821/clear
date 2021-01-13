@@ -10,7 +10,6 @@ import zhuky.clear.entity.Tshareholder;
 import zhuky.clear.util.ORMUtil;
 
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class BaseTableQueryMapperImpl implements BaseTableQueryMapper {

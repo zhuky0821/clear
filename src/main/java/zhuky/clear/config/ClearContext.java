@@ -2,7 +2,6 @@ package zhuky.clear.config;
 
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
-import org.apache.ignite.IgniteSystemProperties;
 import org.apache.ignite.configuration.DataStorageConfiguration;
 import org.apache.ignite.configuration.IgniteConfiguration;
 import org.apache.ignite.configuration.WALMode;
@@ -13,13 +12,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import zhuky.clear.service.impl.FileImportImpl;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 清算中心上下文
@@ -116,7 +115,8 @@ public class ClearContext {
 
     private static final int MAX_CAPACITY = 10000; //阻塞队列容量
     private static BlockingQueue<Object> blockingQueue= new ArrayBlockingQueue<>(MAX_CAPACITY); //阻塞队列
-    private  volatile boolean FLAG = false;
+    private  volatile boolean FLAG = true;
+    Lock lock = new ReentrantLock();
 
     public BlockingQueue<Object> getBlockingQueue() {
         return blockingQueue;
@@ -131,6 +131,11 @@ public class ClearContext {
     }
 
     public void setFLAG(boolean FLAG) {
-        this.FLAG = FLAG;
+        lock.lock();
+        try {
+            this.FLAG = FLAG;
+        }finally {
+            lock.unlock();
+        }
     }
 }

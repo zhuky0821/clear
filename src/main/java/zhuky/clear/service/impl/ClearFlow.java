@@ -2,7 +2,6 @@ package zhuky.clear.service.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import zhuky.clear.dao.CommonDbMapper;
 import zhuky.clear.entity.Tflowtask;
 import zhuky.clear.entity.Ttmpcurrents;

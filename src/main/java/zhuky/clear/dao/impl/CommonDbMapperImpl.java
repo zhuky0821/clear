@@ -6,15 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import zhuky.clear.config.ClearContext;
 import zhuky.clear.dao.CommonDbMapper;
-import zhuky.clear.exception.BusinessErrorException;
 import zhuky.clear.util.StringUtil;
 
 import java.lang.reflect.Field;
-import java.sql.Connection;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
