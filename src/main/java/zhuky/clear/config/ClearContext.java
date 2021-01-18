@@ -115,7 +115,7 @@ public class ClearContext {
 
     private static final int MAX_CAPACITY = 10000; //阻塞队列容量
     private static BlockingQueue<Object> blockingQueue= new ArrayBlockingQueue<>(MAX_CAPACITY); //阻塞队列
-    private  volatile boolean FLAG = true;
+    private  volatile boolean flag = true;
     Lock lock = new ReentrantLock();
 
     public BlockingQueue<Object> getBlockingQueue() {
@@ -126,14 +126,14 @@ public class ClearContext {
         this.blockingQueue = blockingQueue;
     }
 
-    public boolean getFLAG() {
-        return FLAG;
+    public boolean getFlag() {
+        return flag;
     }
 
-    public void setFLAG(boolean FLAG) {
+    public void setFlag(boolean flag) {
         lock.lock();
         try {
-            this.FLAG = FLAG;
+            this.flag = flag;
         }finally {
             lock.unlock();
         }
