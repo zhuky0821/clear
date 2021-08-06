@@ -4,7 +4,6 @@ import com.linuxense.javadbf.DBFReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import zhuky.clear.dao.BaseTableQueryMapper;
 import zhuky.clear.entity.Tfilecolumnconfig;
 import zhuky.clear.exception.BusinessErrorException;
 
@@ -14,8 +13,7 @@ import java.util.List;
 public class DbfUtil {
     private static final Logger logger = LoggerFactory.getLogger(DbfUtil.class);
 
-    @Autowired
-    BaseTableQueryMapper baseTableQueryMapper;
+
 
     public void dbf2csv(String fileName, String tableName){
         logger.info("Dbf文件：{}，转换成csv开始", fileName);
@@ -47,7 +45,7 @@ public class DbfUtil {
 
 
             //获取导入配置
-            List<Tfilecolumnconfig> fileColumnConfigs = baseTableQueryMapper.getFileColumnConfigs(tableName);
+            //List<Tfilecolumnconfig> fileColumnConfigs = baseTableQueryMapper.getFileColumnConfigs(tableName);
 
 
 

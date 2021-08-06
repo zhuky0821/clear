@@ -1,7 +1,5 @@
 package zhuky.clear.util;
 
-import org.apache.ignite.Ignite;
-import org.apache.ignite.cache.query.SqlFieldsQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -23,26 +21,23 @@ public class CodeGeneratorUtil {
     @Value("${clear.code.generator.tables}")
     private String tableNames;
 
-    @Autowired
-    Ignite ignite;
-
     public void createTableFile(){
-        List<String> names = new ArrayList();
-        if("all".equals(tableNames)){
-            List<List<?>> allTables = ignite.cache("ignite-sys-cache").query(new SqlFieldsQuery("SELECT lower(table_name) FROM SYS.TABLES")).getAll();
-            for (List<?> allTable : allTables) {
-                names.add((String) allTable.get(0));
-            }
-        }else {
-            String[] strings = tableNames.split(",");
-            for (String string : strings) {
-                names.add(string);
-            }
-        }
-
-        for (String name : names) {
-            createEntity(name);
-        }
+//        List<String> names = new ArrayList();
+//        if("all".equals(tableNames)){
+//            List<List<?>> allTables = ignite.cache("ignite-sys-cache").query(new SqlFieldsQuery("SELECT lower(table_name) FROM SYS.TABLES")).getAll();
+//            for (List<?> allTable : allTables) {
+//                names.add((String) allTable.get(0));
+//            }
+//        }else {
+//            String[] strings = tableNames.split(",");
+//            for (String string : strings) {
+//                names.add(string);
+//            }
+//        }
+//
+//        for (String name : names) {
+//            createEntity(name);
+//        }
     }
 
     void createEntity(String tableName){
@@ -55,30 +50,30 @@ public class CodeGeneratorUtil {
                 .append("import lombok.Data;\r\n")
                 .append("import lombok.NoArgsConstructor;\r\n");
 
-        SqlFieldsQuery sqlFieldsQuery = new SqlFieldsQuery("SELECT a.column_name, a.type FROM SYS.TABLE_COLUMNS a WHERE a.table_name = upper(?) AND a.TYPE NOT IS null").setArgs(tableName);
-        List<List<?>> all = ignite.cache("ignite-sys-cache").query(sqlFieldsQuery).getAll();
-        for (List<?> objects : all) {
-            String columnName = StringUtil.underlineToCamel((String) objects.get(0));
-            String type = (String) objects.get(1);
-
-            switch (type){
-                case "java.lang.String" :
-                    body.append("    private String ").append(columnName).append(";\r\n");
-                    break;
-                case "java.lang.Integer":
-                    body.append("    private int ").append(columnName).append(";\r\n");
-                    break;
-                case "java.math.BigDecimal":
-                    body.append("    private BigDecimal ").append(columnName).append(";\r\n");
-                    if(!existDecimal){
-                        head.append("import java.math.BigDecimal;\r\n");
-                        existDecimal = true;
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
+//        SqlFieldsQuery sqlFieldsQuery = new SqlFieldsQuery("SELECT a.column_name, a.type FROM SYS.TABLE_COLUMNS a WHERE a.table_name = upper(?) AND a.TYPE NOT IS null").setArgs(tableName);
+//        List<List<?>> all = ignite.cache("ignite-sys-cache").query(sqlFieldsQuery).getAll();
+//        for (List<?> objects : all) {
+//            String columnName = StringUtil.underlineToCamel((String) objects.get(0));
+//            String type = (String) objects.get(1);
+//
+//            switch (type){
+//                case "java.lang.String" :
+//                    body.append("    private String ").append(columnName).append(";\r\n");
+//                    break;
+//                case "java.lang.Integer":
+//                    body.append("    private int ").append(columnName).append(";\r\n");
+//                    break;
+//                case "java.math.BigDecimal":
+//                    body.append("    private BigDecimal ").append(columnName).append(";\r\n");
+//                    if(!existDecimal){
+//                        head.append("import java.math.BigDecimal;\r\n");
+//                        existDecimal = true;
+//                    }
+//                    break;
+//                default:
+//                    break;
+//            }
+//        }
 
         head.append("\r\n@Data\r\n")
                 .append("@AllArgsConstructor\r\n")
