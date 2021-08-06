@@ -59,17 +59,6 @@
 			<version>2.2.2</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.apache.ignite</groupId>
-			<artifactId>ignite-spring-boot-autoconfigure-ext</artifactId>
-			<version>1.0.0</version>
-		</dependency>
-
-<!--		<dependency>-->
-<!--			<groupId>org.apache.ignite</groupId>-->
-<!--			<artifactId>ignite-spring-boot-thin-client-autoconfigure-ext</artifactId>-->
-<!--			<version>1.0.0</version>-->
-<!--		</dependency>-->
 
 	</dependencies>
 
